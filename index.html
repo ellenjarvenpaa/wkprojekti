@@ -6,13 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script type="module" src="/src/main.ts" defer></script>
     <link rel="stylesheet" href="./src/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Agbalumo&family=Caprasimo&display=swap" rel="stylesheet">
     <title>Vite + TS</title>
   </head>
   <body>
     <div class="container">
-      <header>
-
-      </header>
+      <nav>
+        <ul class="nav">
+          <li class="nav-item">
+            <img class="nav-img" src="./icons/ice-cream.png" alt="ice-cream">
+          </li>
+          <li class="nav-item">
+            <img class="nav-img" src="./icons/mhancha-pastry.png" alt="pastry">
+          </li>
+          <li class="nav-item">
+            <img class="nav-img" src="./icons/cake-slice.png" alt="cake-slice">
+          </li>
+          <li class="nav-item">
+            <img class="nav-img" src="./icons/iced-coffee.png" alt="cold-drinks">
+          </li>
+          <li class="nav-item">
+            <img class="nav-img" src="./icons/tea-cup.png" alt="hot-drinks">
+          </li>
+          <li class="nav-item" id="profile-icon">
+            <img class="nav-img" src="./icons/account.png" alt="profile">
+          </li>
+          <li class="nav-item" id="shopping-cart-icon">
+            <img class="nav-img" src="./icons/shopping-cart.png" alt="shopping-cart">
+          </li>
+        </ul>
+      </nav>
       <main>
         <div class="menu-container">
           <h2>Juomat</h2>
@@ -55,7 +80,38 @@
 
           </ul>
         </div>
+
       </main>
+
     </div>
+    <dialog>
+      <section class="product-info">
+        <h2>Tuotetiedot</h2>
+        <div class="menu-item">
+          <img class="menu-img" src="./img/cocacola.png" alt="Coca-Cola drink">
+          <div>
+            <p class="menu-item-name">Coca-Cola Zero</p>
+            <p class="menu-item-desc">Jotain tietoa</p>
+            <p class="menu-item-price">3,5 &#x20AC;</p>
+          </div>
+        </div>
+        <div class="quantity-container">
+          <h3>Määrä</h3>
+          <div class="quantity">
+            <button id="quantity-minus" type="button">
+              <img src="icons/icons8-minus-sign-48.png" alt="minus sign">
+            </button>
+            <div id="quantity-number"><span>1</span> <span>kpl</span></div>
+            <button id="quantity-plus" type="button">
+              <img src="icons/icons8-plus-48.png" alt="plus sign">
+            </button>
+          </div>
+        </div>
+        <div class="buttons">
+          <button type="button" class="button" id="back-btn">Takaisin</button>
+          <button type="button" class="button" id="addtocart-btn">Lisää ostoskoriin</button>
+        </div>
+      </section>
+    </dialog>
   </body>
 </html>

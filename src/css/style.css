@@ -1,11 +1,83 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --black: #000;
+  --white: #F6F6F7;
+  --pink: #FACBEA;
+  --beige: #FFE4D6;
+  --dark-purple: #36151eff;
+}
+
+body {
+  font-family: 'Agbalumo';
+  margin: 0;
+}
+
+body:has(dialog[open]) {
+    overflow-y: hidden;
+}
 
 
+.container {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  position: relative;
+  margin: 0 auto;
+  max-width: 1280px;
+}
+
+
+
+.nav {
+  background-color: var(--pink);
+  display: grid;
+  grid-template-rows: repeat(11, 1fr);
+}
+
+.nav-item {
+  text-align: center;
+  padding-top: 10px;
+  height: auto;
+}
+
+#profile-icon {
+  grid-row-start: 10;
+  grid-row-end: 11;
+}
+
+#shopping-cart-icon {
+  grid-row-start: 11;
+  grid-row-end: 12;
+}
+
+.nav-img {
+  height: 65px;
+  width:65px;
+  justify-content: space-evenly;
+}
+
+main {
+  background-color: var(--beige);
+}
+
+.menu-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  gap: 0.5em 2em;
+}
+
+h2 {
+  text-align: center;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
 
 .menu-items {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 1fr;
-  gap: 0.5em 2em;
+  grid-template-columns: 1fr 1fr;
 }
 
 .menu-item p {
@@ -25,3 +97,80 @@ ul {
   list-style-type: none;
   padding: 0;
 }
+
+dialog {
+  background-color: var(--beige);
+  position: absolute;
+  /* border: none; */
+  border-radius: 8px;
+  padding: 1em;
+
+  min-width: 700px;
+  min-height: 800px;
+}
+
+dialog::backdrop {
+  background-color: #36151e;
+}
+
+dialog .menu-img {
+  max-width: 400px;
+}
+
+@media screen and (max-height: 800px) {
+  dialog {
+    min-width: 650px;
+    min-height: 700px;
+  }
+}
+
+dialog .product-info {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: min-content 1fr min-content 1fr;
+}
+
+.product-info h2 {
+  grid-column: 1/2;
+  grid-row: 1/2;
+}
+.product-info .menu-item {
+  grid-column: 1/2;
+  grid-row: 2/3;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+}
+
+.product-info .quantity-container {
+  grid-column: 1/2;
+  grid-row: 3/4;
+  padding: 30px;
+  width: 50%;
+  margin: 0 auto;
+  display: grid;
+}
+
+.product-info .buttons {
+  grid-column: 1/2;
+  grid-row: 4/5;
+}
+
+
+.quantity {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+}
+
+.button {
+  /* border: none; */
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 600;
+  /* background-color: transparent; */
+  /* font-family: 'Worksans'; */
+  padding: 0;
+  color: var(--red);
+  transition-duration: 0.4s;
+  font-size: 1em;
+}
+
