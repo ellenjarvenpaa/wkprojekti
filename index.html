@@ -119,9 +119,28 @@
         <form id="login-form" class="form">
             <label class="required" for="member-number">Syötä jäsennumero</label><br>
             <input id="" type="text" name="member-number" required><br>
-
-            <input type="submit" value="Kirjaudu sisään" class="button" required><br>
+            <div class="buttons">
+              <input type="submit" value="Kirjaudu sisään" class="button" required>
+              <button type="button" class="button" id="back-btn">Takaisin</button>
+            </div>
         </form>
+      </section>
+    </dialog>
+    <dialog id="shopping-cart-dialog">
+      <section class="shopping-cart">
+          <h2>Ostoskori</h2>
+          <div class="menu-item">
+            <img class="menu-img" src="img/cocacola.png" alt="Coca-Cola drink">
+            <div>
+              <p class="menu-item-name">Coca-Cola Zero</p>
+              <p class="menu-item-desc">Jotain tietoa</p>
+              <p class="menu-item-price">3,5 &#x20AC;</p>
+            </div>
+          </div>
+          <div class="buttons">
+            <button type="button" class="button" id="back-btn">Takaisin</button>
+            <button type="button" class="button" id="paymentbtn">Maksamaan</button>
+          </div>
       </section>
     </dialog>
   </body>
