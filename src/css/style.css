@@ -10,6 +10,7 @@
   --dark-purple: #36151e;
   --magenta: #B0578D;
   --persian-pink: #D988B9;
+  --red: #ce263cf6;
 }
 
 body {
@@ -141,7 +142,7 @@ dialog .menu-img {
 }
 
 /* mouse over link */
-button:hover {
+button:hover, input[type="submit"]:hover {
   background-color: hsl(320, 82%, 89%, 0.5);
 }
 
@@ -231,4 +232,43 @@ dialog .product-info {
 #login-form {
   display: grid;
   justify-content: center;
+}
+
+
+/* Hallinta sivut */
+/* Login */
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-admin{
+  padding: 2em;
+  border: 1px solid var(--dark-purple);
+  border-radius: 8px;
+}
+
+.login-admin h2{
+  margin: 0;
+  margin-bottom: 0.75em;
+}
+
+.login-admin form {
+  width: 400px;
+}
+
+
+
+.form input:invalid {
+    border: 1px solid var(--red);
+}
+input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
