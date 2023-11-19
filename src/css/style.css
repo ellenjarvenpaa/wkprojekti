@@ -1,3 +1,14 @@
+@font-face {
+  font-family: 'Montserrat';
+  src: url(../../fonts/Montserrat-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url(../../fonts/Roboto-Regular.ttf) format('truetype');
+}
+
+
 * {
   box-sizing: border-box;
 }
@@ -14,7 +25,7 @@
 }
 
 body {
-  font-family: 'Agbalumo';
+  font-family: 'Agbalumo', 'Montserrat', 'Roboto', 'Verdana', sans-serif;
   margin: 0;
 }
 
@@ -234,6 +245,10 @@ dialog .product-info {
   justify-content: center;
 }
 
+.required::after {
+  content: ' *';
+  color: var(--red);
+}
 
 /* Hallinta sivut */
 /* Login */
@@ -259,6 +274,9 @@ dialog .product-info {
   width: 400px;
 }
 
+.login-admin .button {
+  padding: 0.75em;
+}
 
 
 .form input:invalid {
@@ -271,4 +289,71 @@ input {
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+/* admin sivu */
+.admin-container {
+	display: grid;
+	grid-template-columns:repeat(12, minmax(min-content, 10em));
+	grid-template-rows: repeat(2, min-content);
+	gap: 1em;
+}
+
+.admin-nav {
+  grid-column: 2 / 12;
+  grid-row: 1 / 2;
+  border-bottom: 1px solid var(--persian-pink);
+  font-family: 'Roboto';
+  font-weight: 600;
+}
+
+.admin-nav-items {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(min-content, 10em));
+  align-items: center;
+}
+
+.sign-out {
+  grid-column: 10 / -1;
+}
+
+.admin-nav-item button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1em;
+  padding: 0.7em 0;
+  font-weight: inherit;
+  text-transform: inherit;
+  color: var(--dark-purple);
+
+  transition-duration: 2s;
+}
+
+.admin-nav-item a {
+  text-decoration: none;
+  padding: 0.7em 0;
+  display: block;
+  color: var(--dark-purple);
+  text-align: center;
+}
+
+.admin-nav-item a:hover, .admin-nav-item button:hover {
+  color: var(--magenta);
+}
+
+.admin-nav-item a:active {
+  border-bottom: 2px solid var(--magenta);
+}
+
+#logo a{
+  font-family: Agbalumo;
+  font-size: 1.5em;
+}
+
+/* admin menu */
+.admin-container .menu-container {
+  grid-column: 2 / 12;
+  grid-row: 2 / 3;
 }
