@@ -21,6 +21,27 @@ body:has(dialog[open]) {
     overflow-y: hidden;
 }
 
+.title {
+  text-align: center;
+  font-size: 5em;
+  text-decoration: none;
+  background-image: linear-gradient(150deg, var(--pink), var(--magenta));
+  background-size: 100%;
+  background-repeat: repeat;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-background-clip: text;
+  -moz-text-fill-color: transparent;
+}
+
+.title:hover {
+  transform: scale(1.1);
+  transition-duration: 1s;
+}
+
+a {
+  text-decoration: none;
+}
 
 .container {
   display: grid;
@@ -40,6 +61,11 @@ body:has(dialog[open]) {
   text-align: center;
   padding-top: 10px;
   height: auto;
+}
+
+.nav-item:hover {
+  transform: scale(1.1);
+  transition-duration: 1s;
 }
 
 #profile-icon {
