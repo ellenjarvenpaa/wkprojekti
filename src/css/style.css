@@ -89,19 +89,33 @@ h2 {
 
 .menu-items {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2em;
+}
+
+.menu-item {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(min-content, 1fr));
+  grid-template-rows: min-content min-content;
+  padding: 2em;
 }
 
 .menu-item p {
   text-align: center;
 }
 
-.menu-img {
+.menu-item .menu-img {
   width: 100%;
-  max-width: 250px;
+  /* max-width: 250px; */
   margin: auto;
   display: block;
   border: solid 1px black;
+  grid-column:  1 / -1;
+}
+
+.menu-item .menu-item-info {
+  grid-column: 1 / -1;
+  grid-row: 2 / 3;
 }
 
 ul {
