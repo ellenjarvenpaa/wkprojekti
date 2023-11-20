@@ -215,7 +215,6 @@ button:hover, input[type="submit"]:hover {
   background-color: hsl(320, 82%, 89%, 0.5);
 }
 
-
 dialog .product-info {
   font-size: 1.5em;
   display: grid;
@@ -365,10 +364,10 @@ dialog .shopping-cart {
   padding: 0.75em;
 }
 
-
 .form input:invalid {
     border: 1px solid var(--red);
 }
+
 input {
   display: block;
   width: 100%;
@@ -443,4 +442,78 @@ input {
 .admin-container .menu-container {
   grid-column: 2 / 12;
   grid-row: 2 / 3;
+}
+
+.admin-container .order-container {
+  grid-column: 2 / 12;
+  grid-row: 2 / 3;
+}
+
+.order-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  gap: 0.5em 2em;
+}
+
+.order-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 2em;
+}
+
+.order-item {
+  text-align: center;
+  border: solid black 1px;
+}
+
+#readybtn {
+  padding: 10 10 10 10;
+  margin-bottom: 0.75em;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--dark-purple);
+  background-color: var(--pink);
+  transition-duration: 0.4s;
+  font-size: 1em;
+  border-radius: 2px;
+}
+
+#readybtn:hover, #offer-activate:hover, #offer-delete:hover{
+  background-color: hsl(320, 82%, 89%, 0.5);
+}
+
+#offer-activate {
+  padding: 10 10 10 10;
+  margin-bottom: 0.75em;
+  margin-right: 5px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--dark-purple);
+  background-color: var(--pink);
+  transition-duration: 0.4s;
+  font-size: 1em;
+  border-radius: 2px;
+
+}
+
+#offer-delete {
+  padding: 10 10 10 10;
+  margin-bottom: 0.75em;
+  margin-left: 5px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--dark-purple);
+  background-color: var(--pink);
+  transition-duration: 0.4s;
+  font-size: 1em;
+  border-radius: 2px;
+
 }
