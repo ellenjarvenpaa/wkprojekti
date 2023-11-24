@@ -15,6 +15,7 @@
 body {
   font-family: 'Agbalumo';
   margin: 0;
+  overflow: scroll;
 }
 
 body:has(dialog[open]) {
@@ -54,12 +55,12 @@ a {
 .nav {
   background-color: var(--pink);
   display: grid;
-  grid-template-rows: repeat(11, 1fr);
+  grid-template-rows: repeat(20, 1fr);
 }
 
 .nav-item {
   text-align: center;
-  padding-top: 10px;
+  padding-top: 30px;
   height: auto;
 }
 
@@ -101,7 +102,7 @@ h2 {
   grid-column-end: 3;
 }
 
-.menu-items {
+.menu-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
