@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script type="module" src="../src/main.ts" defer></script>
+  <script type="module" src="./admin.ts" defer></script>
   <link rel="stylesheet" href="../src/css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +21,16 @@
           <a href="./orders-admin.html">Tilaukset</a>
         </li>
         <li class="admin-nav-item menu">
-          <a href="./menu-admin.html">Menu</a>
+          <div class="dropdown">
+            <a href="./menu-admin.html">Menu</a>
+            <div class="dropdown-content">
+              <a href="#">Jäätelöt</a>
+              <a href="#">Leivonnaiset</a>
+              <a href="#">Kakut</a>
+              <a href="#">Kylmät juomat</a>
+              <a href="#">Kuumat juomat</a>
+            </div>
+          </div>
         </li>
         <li class="admin-nav-item">
           <a href="./offer-admin.html">Tarjoukset</a>
@@ -32,126 +41,8 @@
       </ul>
     </nav>
     <div class="menu-container">
-      <h2>Jäätelöt</h2>
       <ul class="menu-items">
-        <li class="menu-item">
-          <img class="menu-img" src="/img/cocacola.png" alt="Coca-Cola drink">
-          <div class="menu-item-info">
-            <p class="menu-item-name">Coca-Cola Zero</p>
-            <p class="menu-item-price">3,5 &#x20AC;</p>
-          </div>
-        </li>
-        <li class="menu-item">
-          <img class="menu-img" src="/img/cocacola.png" alt="Coca-Cola drink">
-          <div class="menu-item-info">
-            <p class="menu-item-name">Coca-Cola Zero</p>
-            <p class="menu-item-price">3,5 &#x20AC;</p>
-          </div>
-        </li>
-        <li class="menu-item">
-          <img class="menu-img" src="/img/cocacola.png" alt="Coca-Cola drink">
-          <div class="menu-item-info">
-            <p class="menu-item-name">Coca-Cola Zero</p>
-            <p class="menu-item-price">3,5 &#x20AC;</p>
-          </div>
-        </li>
-        </ul>
-        <h2>Leivonnaiset</h2>
-          <ul class="menu-items">
-            <li class="menu-item">
-              <img class="menu-img" src="/img/cocacola.png" alt="Coca-Cola drink">
-              <div class="menu-item-info">
-                <p class="menu-item-name">Coca-Cola Zero</p>
-                <p class="menu-item-price">3,5 &#x20AC;</p>
-              </div>
-            </li>
-            <li class="menu-item">
-              <img class="menu-img" src="/img/cocacola.png" alt="Coca-Cola drink">
-              <div class="menu-item-info">
-                <p class="menu-item-name">Coca-Cola Zero</p>
-                <p class="menu-item-price">3,5 &#x20AC;</p>
-              </div>
-            </li>
-            <li class="menu-item">
-              <img class="menu-img" src="/img/cocacola.png" alt="Coca-Cola drink">
-              <div class="menu-item-info">
-                <p class="menu-item-name">Coca-Cola Zero</p>
-                <p class="menu-item-price">3,5 &#x20AC;</p>
-              </div>
-            </li>
-          </ul>
-          <h2>Kakut</h2>
-          <ul class="menu-items">
-            <li class="menu-item">
-              <img class="menu-img" src="/img/cocacola.png" alt="Coca-Cola drink">
-              <div class="menu-item-info">
-                <p class="menu-item-name">Coca-Cola Zero</p>
-                <p class="menu-item-price">3,5 &#x20AC;</p>
-              </div>
-            </li>
-            <li class="menu-item">
-              <img class="menu-img" src="/img/cocacola.png" alt="Coca-Cola drink">
-              <div class="menu-item-info">
-                <p class="menu-item-name">Coca-Cola Zero</p>
-                <p class="menu-item-price">3,5 &#x20AC;</p>
-              </div>
-            </li>
-            <li class="menu-item">
-              <img class="menu-img" src="/img/cocacola.png" alt="Coca-Cola drink">
-              <div class="menu-item-info">
-                <p class="menu-item-name">Coca-Cola Zero</p>
-                <p class="menu-item-price">3,5 &#x20AC;</p>
-              </div>
-            </li>
-          </ul>
-          <h2>Kylmät juomat</h2>
-          <ul class="menu-items">
-            <li class="menu-item">
-              <img class="menu-img" src="/img/cocacola.png" alt="Coca-Cola drink">
-              <div class="menu-item-info">
-                <p class="menu-item-name">Coca-Cola Zero</p>
-                <p class="menu-item-price">3,5 &#x20AC;</p>
-              </div>
-            </li>
-            <li class="menu-item">
-              <img class="menu-img" src="/img/cocacola.png" alt="Coca-Cola drink">
-              <div class="menu-item-info">
-                <p class="menu-item-name">Coca-Cola Zero</p>
-                <p class="menu-item-price">3,5 &#x20AC;</p>
-              </div>
-            </li>
-            <li class="menu-item">
-              <img class="menu-img" src="/img/cocacola.png" alt="Coca-Cola drink">
-              <div class="menu-item-info">
-                <p class="menu-item-name">Coca-Cola Zero</p>
-                <p class="menu-item-price">3,5 &#x20AC;</p>
-              </div>
-            </li>
       </ul>
-      <h2>Kuumat juomat</h2>
-          <ul class="menu-items">
-            <li class="menu-item">
-              <img class="menu-img" src="/img/cocacola.png" alt="Coca-Cola drink">
-              <div class="menu-item-info">
-                <p class="menu-item-name">Coca-Cola Zero</p>
-                <p class="menu-item-price">3,5 &#x20AC;</p>
-              </div>
-            </li>
-            <li class="menu-item">
-              <img class="menu-img" src="/img/cocacola.png" alt="Coca-Cola drink">
-              <div class="menu-item-info">
-                <p class="menu-item-name">Coca-Cola Zero</p>
-                <p class="menu-item-price">3,5 &#x20AC;</p>
-              </div>
-            </li>
-            <li class="menu-item">
-              <img class="menu-img" src="/img/cocacola.png" alt="Coca-Cola drink">
-              <div class="menu-item-info">
-                <p class="menu-item-name">Coca-Cola Zero</p>
-                <p class="menu-item-price">3,5 &#x20AC;</p>
-              </div>
-            </li>
-          </ul>
     </div>
   </div>
 </body>
