@@ -27,7 +27,6 @@
 body {
   font-family: 'Agbalumo', 'Montserrat', 'Roboto', 'Verdana', sans-serif;
   margin: 0;
-  overflow: scroll;
 }
 
 body:has(dialog[open]) {
@@ -67,7 +66,8 @@ a {
 .nav {
   background-color: var(--pink);
   display: grid;
-  grid-template-rows: repeat(20, 1fr);
+  grid-template-rows: repeat(11, 1fr);
+  position: sticky;
 }
 
 .nav-item {
@@ -122,9 +122,6 @@ h2 {
 }
 
 .menu-item {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(min-content, 1fr));
-  grid-template-rows: min-content min-content;
   padding: 2em;
 }
 
@@ -242,21 +239,6 @@ dialog .shopping-cart {
   grid-row: 1/2;
 }
 
-.product-info .menu-item {
-  grid-column: 1/2;
-  grid-row: 2/3;
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-}
-
-.shopping-cart .menu-item {
-  grid-column: 1/2;
-  grid-row: 2/3;
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  margin-bottom: 5px;
-}
-
 .product-info .quantity-container {
   grid-column: 1/2;
   grid-row: 3/4;
@@ -284,7 +266,7 @@ dialog .shopping-cart {
   margin-top: 5px;
 }
 
-#back-btn, #addtocart-btn {
+#back-btn-info, #back-btn-login, #back-btn-cart, #addtocart-btn {
   padding: 0.75em;
 }
 
@@ -330,6 +312,17 @@ dialog .shopping-cart {
   display: grid;
   justify-content: center;
   font-size: 1.5em;
+}
+
+#login-title {
+  font-size: 2em;
+}
+
+#login-dialog .buttons {
+  grid-column: 1/2;
+  grid-row: 4/5;
+  display: flex;
+  gap: 0.5em;
 }
 
 .required::after {

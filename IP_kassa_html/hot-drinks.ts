@@ -1,4 +1,4 @@
-import { Menu } from "./interface/Menu";
+import { Menu } from "../src/interface/Menu";
 
 const mockData: Menu[] = [
 	{
@@ -108,7 +108,9 @@ async function fetchData<T>(url: string, mockData?: T): Promise<T> {
   const apiUrl = 'http://localhost:3000/';
   const menuItems = await fetchData<Menu[]>(apiUrl, mockData);
 
-  menuItems.forEach((item: Menu) => {
+  const filteredCategories = menuItems.filter((category) => category.category_name === 'Kuumat juomat');
+
+  filteredCategories.forEach((item: Menu) => {
 	const menuText = () => {
 	  let html = `
 		<h2>${item.category_name}</h2>
@@ -139,46 +141,3 @@ async function fetchData<T>(url: string, mockData?: T): Promise<T> {
 	document.querySelector('.menu-items')?.insertAdjacentHTML('beforeend', menuTextHtml);
 
   });
-
-
-// select dialog element from DOM
-const dialog = document.querySelector('dialog');
-const menuItemDialog = document.querySelector('#product-info-dialog') as HTMLDialogElement | null;
-const loginDialog = document.querySelector('#login-dialog') as HTMLDialogElement | null;
-const shoppingCartDialog = document.querySelector('#shopping-cart-dialog') as HTMLDialogElement | null;
-
-// select menu item elements from DOM
-const menuItemEls = document.querySelectorAll('.menu-item');
-menuItemEls.forEach((item) => {
-	item.addEventListener('click', () => {
-		menuItemDialog?.showModal();
-	})
-	document.body.style.overflow = "auto";
-});
-
-const profileIconE = document.querySelector('#profile-icon') as HTMLElement | null;
-profileIconE?.addEventListener('click', () => {
-	loginDialog?.showModal();
-	document.body.style.overflow = "auto";
-});
-
-const shoppingCartIcon = document.querySelector('#shopping-cart-icon') as HTMLElement | null;
-shoppingCartIcon?.addEventListener('click', () => {
-	shoppingCartDialog?.showModal();
-	document.body.style.overflow = "auto";
-});
-
-const closeDialogBtnInfo = document.querySelector('#back-btn-info') as HTMLDialogElement;
-closeDialogBtnInfo.addEventListener('click', () => {
-	dialog?.close();
-});
-
-const closeDialogBtnLogin = document.querySelector('#back-btn-login') as HTMLButtonElement;
-closeDialogBtnLogin.addEventListener('click', () => {
-	dialog?.close();
-});
-
-const closeDialogBtnCart = document.querySelector('#back-btn-cart') as HTMLButtonElement;
-closeDialogBtnCart.addEventListener('click', () => {
-	dialog?.close();
-});
