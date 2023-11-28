@@ -67,11 +67,12 @@ async function fetchData<T>(url: string, mockData?: T): Promise<T> {
 		const { dish_name, dish_price } = dish;
 		html += `
 		  <li class="menu-item">
-			<img class="menu-img" src="img/cocacola.png" alt=" drink">
-			<div>
+			<img class="menu-img" src="../img/cocacola.png" alt=" drink">
+			<div class="menu-item-info">
 			  <p class="menu-item-name">${dish_name}</p>
 			  <p class="menu-item-price">${dish_price}</p>
 			</div>
+			<button id="menu-modify-btn" class="button"></button>
 		  </li>
 		`;
 	  });
