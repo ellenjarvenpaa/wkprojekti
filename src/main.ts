@@ -182,3 +182,35 @@ const closeDialogBtnCart = document.querySelector('#back-btn-cart') as HTMLButto
 closeDialogBtnCart.addEventListener('click', () => {
 	dialog?.close();
 });
+
+const plusBtn = document.querySelector('#quantity-plus') as HTMLButtonElement;
+
+plusBtn.addEventListener('click', () => {
+    // Get the quantity element and explicitly cast it to HTMLInputElement
+    const quantityElement = document.querySelector('.quantity-number') as HTMLInputElement;
+
+    // Parse the quantity value to a number
+    let quantity = parseInt(quantityElement.value);
+
+    // Increment the quantity by 1
+    quantity++;
+
+    // Update the displayed quantity
+    quantityElement.value = quantity.toString();
+});
+
+const minusBtn = document.querySelector('#quantity-minus') as HTMLButtonElement;
+
+minusBtn.addEventListener('click', () => {
+    // Get the quantity element and explicitly cast it to HTMLInputElement
+    const quantityElement = document.querySelector('.quantity-number') as HTMLInputElement;
+
+    // Parse the quantity value to a number
+    let quantity = parseInt(quantityElement.value);
+
+    // Increment the quantity by 1
+    quantity--;
+
+    // Update the displayed quantity
+    quantityElement.value = quantity.toString();
+});

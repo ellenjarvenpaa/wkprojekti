@@ -291,6 +291,7 @@ dialog .shopping-cart {
   border-radius: 50%;
   display: flex;
   align-items: center;
+  width: 50px;
 }
 
 .quantity img {
@@ -305,6 +306,10 @@ dialog .shopping-cart {
   vertical-align: middle;
   margin-left: 4px;
   margin-right: 4px;
+}
+
+.quantity-number {
+  width: 30%;
 }
 
 /* LOGIN Dialog */
