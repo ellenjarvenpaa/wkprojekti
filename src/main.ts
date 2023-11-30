@@ -1,144 +1,88 @@
 import { Menu } from "./interface/Menu";
 
-const mockData: Menu[] = [
-	{
-	  category_name: "Jäätelöt",
-	  dishes: [
-		{
-		  dish_id: 1,
-		  dish_name: "Coca-cola",
-		  dish_price: "3.50",
-		  description: "Coca-cola",
-		},
-		{
-		  dish_id: 2,
-		  dish_name: "Fanta",
-		  dish_price: "3.50",
-		  description: "Fanta",
-		},
-		{
-		  dish_id: 6,
-		  dish_name: "Fanta2",
-		  dish_price: "3.50",
-		  description: "Fanta2",
-		},
-	  ],
-	},
-	{
-	  category_name: "Leivonnaiset",
-	  dishes: [
-		{
-		  dish_id: 3,
-		  dish_name: "Kinuskikakku",
-		  dish_price: "4.50",
-		  description: "Kinuski",
-		},
-		{
-		  dish_id: 4,
-		  dish_name: "Punainen sametti",
-		  dish_price: "4.00",
-		  description: "Punainen sametti kakku",
-		},
-	  ],
-	},
-	{
-		category_name: "Kakut",
-	  dishes: [
-		{
-		  dish_id: 3,
-		  dish_name: "Kinuskikakku",
-		  dish_price: "4.50",
-		  description: "Kinuski",
-		},
-		{
-		  dish_id: 4,
-		  dish_name: "Punainen sametti",
-		  dish_price: "4.00",
-		  description: "Punainen sametti kakku",
-		},
-	  ],
+const fetchData = async <T>(url: string, options: RequestInit = {}): Promise<T> => {
+	const response = await fetch(url, options);
+		if (!response.ok) {
+			throw new Error(`Error ${response.status} occured`);
+		}
+	const json = response.json();
+	return json;
+};
 
-	},
-	{
-		category_name: "Kylmät juomat",
-	  dishes: [
-		{
-		  dish_id: 3,
-		  dish_name: "Kinuskikakku",
-		  dish_price: "4.50",
-		  description: "Kinuski",
-		},
-		{
-		  dish_id: 4,
-		  dish_name: "Punainen sametti",
-		  dish_price: "4.00",
-		  description: "Punainen sametti kakku",
-		},
-	  ],
-	},
-	{
-		category_name: "Kuumat juomat",
-	  dishes: [
-		{
-		  dish_id: 3,
-		  dish_name: "Kinuskikakku",
-		  dish_price: "4.50",
-		  description: "Kinuski",
-		},
-		{
-		  dish_id: 4,
-		  dish_name: "Punainen sametti",
-		  dish_price: "4.00",
-		  description: "Punainen sametti kakku",
-		},
-	  ],
-	}
-  ];
 
-async function fetchData<T>(url: string, mockData?: T): Promise<T> {
-	if (mockData) {
-	  return mockData;
-	} else {
-	  const response = await fetch(url);
-	  const data = await response.json();
-	  return data as T;
-	}
-  }
+const apiUrl = 'http://127.0.0.1:3000/';
+const menuItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
+const infoItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
 
-  const apiUrl = 'http://localhost:3000/';
-  const menuItems = await fetchData<Menu[]>(apiUrl, mockData);
-
-  menuItems.forEach((item: Menu) => {
+menuItems.forEach((item: Menu) => {
 	const menuText = () => {
-	  let html = `
+		let html = `
 		<h2>${item.category_name}</h2>
 		<ul class="menu-list">
-	  `;
+		`;
 
-	  item.dishes.forEach((dish) => {
-		const { dish_name, dish_price } = dish;
-		html += `
-		  <li class="menu-item">
+		item.dishes.forEach((dish) => {
+			const { dish_name, dish_price } = dish;
+			html += `
+			<li class="menu-item">
 			<img class="menu-img" src="img/cocacola.png" alt=" drink">
 			<div>
-			  <p class="menu-item-name">${dish_name}</p>
-			  <p class="menu-item-price">${dish_price}</p>
+			<p class="menu-item-name">${dish_name}</p>
+			<p class="menu-item-price">${dish_price}</p>
 			</div>
-		  </li>
-		`;
-	  });
+			</li>
+			`;
+		});
 
-	  html += `
+		html += `
 		</ul>
-	  `;
+		`;
 
-	  return html;
+		return html;
 	};
 
 	const menuTextHtml = menuText();
 	document.querySelector('.menu-items')?.insertAdjacentHTML('beforeend', menuTextHtml);
 
+	});
+
+	/*const infoItemId = document.querySelector('.menu-item');
+	infoItemId?.addEventListener('click', (event) => {
+		const clickedElement = event.target as HTMLElement;
+		const dishName = clickedElement.innerText;
+
+		console.log('Dish Name:', dishName);
+	});*/
+
+
+infoItems.forEach((item: Menu) => {
+	const infoText = () => {
+	  let html = `
+	  <img class="menu-img" src="img/cocacola.png" alt="Coca-Cola drink">
+	  <div>
+	  `;
+
+	  item.dishes.forEach((dish) => {
+		const { dish_name, description, dish_price } = dish;
+		html += `
+		<p class="menu-item-name">${dish_name}</p>
+		<p class="menu-item-desc">${description}</p>
+		<p class="menu-item-price">${dish_price}</p>
+		`;
+	  });
+
+	  html += `
+		</div>
+	  `;
+
+	  return html;
+	};
+
+	const menuTextHtml = infoText();
+	document.querySelector('.info-item')?.insertAdjacentHTML('beforeend', menuTextHtml);
+
   });
+
 
 
 // select dialog element from DOM
@@ -184,33 +128,17 @@ closeDialogBtnCart.addEventListener('click', () => {
 });
 
 const plusBtn = document.querySelector('#quantity-plus') as HTMLButtonElement;
-
 plusBtn.addEventListener('click', () => {
-    // Get the quantity element and explicitly cast it to HTMLInputElement
     const quantityElement = document.querySelector('.quantity-number') as HTMLInputElement;
-
-    // Parse the quantity value to a number
-    let quantity = parseInt(quantityElement.value);
-
-    // Increment the quantity by 1
+    let quantity = parseInt(quantityElement.value)
     quantity++;
-
-    // Update the displayed quantity
     quantityElement.value = quantity.toString();
 });
 
 const minusBtn = document.querySelector('#quantity-minus') as HTMLButtonElement;
-
 minusBtn.addEventListener('click', () => {
-    // Get the quantity element and explicitly cast it to HTMLInputElement
     const quantityElement = document.querySelector('.quantity-number') as HTMLInputElement;
-
-    // Parse the quantity value to a number
     let quantity = parseInt(quantityElement.value);
-
-    // Increment the quantity by 1
     quantity--;
-
-    // Update the displayed quantity
     quantityElement.value = quantity.toString();
 });

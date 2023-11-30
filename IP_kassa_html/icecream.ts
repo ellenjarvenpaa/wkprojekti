@@ -1,112 +1,17 @@
 import { Menu } from "../src/interface/Menu";
 
-const mockData: Menu[] = [
-	{
-	  category_name: "Jäätelöt",
-	  dishes: [
-		{
-		  dish_id: 1,
-		  dish_name: "Coca-cola",
-		  dish_price: "3.50",
-		  description: "Coca-cola",
-		},
-		{
-		  dish_id: 2,
-		  dish_name: "Fanta",
-		  dish_price: "3.50",
-		  description: "Fanta",
-		},
-		{
-		  dish_id: 6,
-		  dish_name: "Fanta2",
-		  dish_price: "3.50",
-		  description: "Fanta2",
-		},
-	  ],
-	},
-	{
-	  category_name: "Leivonnaiset",
-	  dishes: [
-		{
-		  dish_id: 3,
-		  dish_name: "Kinuskikakku",
-		  dish_price: "4.50",
-		  description: "Kinuski",
-		},
-		{
-		  dish_id: 4,
-		  dish_name: "Punainen sametti",
-		  dish_price: "4.00",
-		  description: "Punainen sametti kakku",
-		},
-	  ],
-	},
-	{
-		category_name: "Kakut",
-	  dishes: [
-		{
-		  dish_id: 3,
-		  dish_name: "Kinuskikakku",
-		  dish_price: "4.50",
-		  description: "Kinuski",
-		},
-		{
-		  dish_id: 4,
-		  dish_name: "Punainen sametti",
-		  dish_price: "4.00",
-		  description: "Punainen sametti kakku",
-		},
-	  ],
-
-	},
-	{
-		category_name: "Kylmät juomat",
-	  dishes: [
-		{
-		  dish_id: 3,
-		  dish_name: "Kinuskikakku",
-		  dish_price: "4.50",
-		  description: "Kinuski",
-		},
-		{
-		  dish_id: 4,
-		  dish_name: "Punainen sametti",
-		  dish_price: "4.00",
-		  description: "Punainen sametti kakku",
-		},
-	  ],
-	},
-	{
-		category_name: "Kuumat juomat",
-	  dishes: [
-		{
-		  dish_id: 3,
-		  dish_name: "Kinuskikakku",
-		  dish_price: "4.50",
-		  description: "Kinuski",
-		},
-		{
-		  dish_id: 4,
-		  dish_name: "Punainen sametti",
-		  dish_price: "4.00",
-		  description: "Punainen sametti kakku",
-		},
-	  ],
+  const fetchData = async <T>(url: string, options: RequestInit = {}): Promise<T> => {
+	const response = await fetch(url, options);
+	if (!response.ok) {
+	  throw new Error(`Error ${response.status} occured`);
 	}
-  ];
+	const json = response.json();
+	return json;
+  };
 
-async function fetchData<T>(url: string, mockData?: T): Promise<T> {
-	if (mockData) {
-	  return mockData;
-	} else {
-	  const response = await fetch(url);
-	  const data = await response.json();
-	  return data as T;
-	}
-  }
 
-  const apiUrl = 'http://localhost:3000/';
-  const menuItems = await fetchData<Menu[]>(apiUrl, mockData);
+  const apiUrl = 'http://127.0.0.1:3000/';
+  const menuItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
 
   const filteredCategories = menuItems.filter((category) => category.category_name === 'Jäätelöt');
 
