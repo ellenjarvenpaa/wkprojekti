@@ -2,12 +2,21 @@ DROP DATABASE IF EXISTS dessert;
 CREATE DATABASE dessert;
 USE dessert;
 
+
+CREATE TABLE UserLevels (
+    user_level_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL
+);
+
+
 CREATE TABLE Users (
     user_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     user_level_id INT NOT NULL,
-    created_at TIMESTAMP NOT NULL
+    created_at TIMESTAMP NOT NULL,
+    FOREIGN KEY (user_level_id) REFERENCES UserLevels(user_level_id)
 );
 
 CREATE TABLE Categories (
@@ -21,6 +30,7 @@ CREATE TABLE Dishes (
     dish_name VARCHAR(255) NOT NULL,
     description VARCHAR(255),
     category_id INT NOT NULL,
+    created_at TIMESTAMP NOT NULL,
     FOREIGN KEY (category_id) REFERENCES Categories(category_id)
 );
 
@@ -29,6 +39,8 @@ CREATE TABLE Offers (
     dish_id INT NOT NULL,
     offer_price DECIMAL(6,2) NOT NULL,
     created_at TIMESTAMP NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
     FOREIGN KEY (dish_id) REFERENCES Dishes(dish_id)
 );
 
@@ -45,11 +57,17 @@ CREATE TABLE OrderTicket (
     order_num INT NOT NULL,
     dish_id INT NOT NULL,
     dish_price DECIMAL(6,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
     FOREIGN KEY (order_num) REFERENCES Orders(order_num),
     FOREIGN KEY (dish_id) REFERENCES Dishes(dish_id)
 );
 
 -- Lisää mock data
+INSERT INTO UserLevels(name, description)
+VALUES ('super admin', 'kaikki oikeus'),
+    ('admin', 'admin hallinta paitsi poista/luoda käyttäjä'),
+    ('user', 'normaali käyttäjä');
+
 INSERT INTO Users(email, password, user_level_id)
 VALUES ('juuso@gmail.com', 'juuso', 2),
     ('sofia@gmail.com', 'sofia1', 3),
@@ -78,8 +96,8 @@ VALUES('Coca-cola', 3.5, 'Coca-cola', 1),
     ('Mocha', 3.5, 'Mocha', 5);
 
 --sale: cocacola, kinuskikakku, mango-meloni, americano, latte
-INSERT INTO Offers(dish_id, offer_price)
-VALUES (1, 2.9), (3, 2.9), (9, 1.9), (12, 2.9), (13, 2.9);
+INSERT INTO Offers(dish_id, offer_price, start_date, end_date)
+VALUES (1, 2.9, '2023-12-1', '2023-12-31'), (3, 2.9, '2023-12-1', '2023-12-31'), (9, 1.9, '2023-12-1', '2023-12-31'), (12, 2.9, '2023-12-1', '2023-12-31'), (13, 2.9, '2023-12-1', '2023-12-31');
 
 INSERT INTO Orders(order_status)
     VALUES(0),(0);
