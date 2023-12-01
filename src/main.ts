@@ -120,7 +120,7 @@ async function fetchData<T>(url: string, mockData?: T): Promise<T> {
 		html += `
 		  <li class="menu-item">
 			<img class="menu-img" src="img/cocacola.png" alt=" drink">
-			<div>
+			<div class="menu-item-info">
 			  <p class="menu-item-name">${dish_name}</p>
 			  <p class="menu-item-price">${dish_price}</p>
 			</div>

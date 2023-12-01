@@ -25,8 +25,12 @@
 }
 
 body {
-  font-family: 'Agbalumo', 'Montserrat', 'Roboto', 'Verdana', sans-serif;
+  font-family: 'Roboto', 'Agbalumo', 'Montserrat', 'Verdana', sans-serif;
   margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Agbalumo';
 }
 
 body:has(dialog[open]) {
@@ -116,14 +120,14 @@ h2 {
 
 .menu-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto;
   gap: 2em;
 }
 
 .menu-item {
   display: grid;
-  grid-template-columns: repeat(2, minmax(min-content, 1fr));
+  grid-template-columns: 3fr min-content;
   grid-template-rows: min-content min-content;
   padding: 2em;
 }
@@ -139,6 +143,7 @@ h2 {
   display: block;
   border: solid 1px black;
   grid-column:  1 / -1;
+  grid-row: 1 / 2;
 }
 
 .menu-item .menu-item-info {
@@ -153,14 +158,14 @@ ul {
 }
 
 @media screen and (max-width: 1090px){
-  .menu-items {
+  .menu-list {
     grid-template-columns: 1fr 1fr;
   }
 }
 
 
 @media screen and (max-width: 640px){
-  .menu-items {
+  .menu-list {
     grid-template-columns: 1fr;
     /* grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); */
   }
@@ -176,7 +181,6 @@ dialog {
   border-radius: 8px;
   padding: 1em;
   min-width: 700px;
-  min-height: 800px;
   margin: auto;
 }
 
@@ -188,10 +192,16 @@ dialog .menu-img {
   max-width: 400px;
 }
 
-@media screen and (max-height: 800px) {
+/* @media screen and (max-height: 800px) {
   dialog {
     min-width: 650px;
     min-height: 650px;
+  }
+} */
+
+@media screen and (max-width: 768px) {
+  dialog{
+    min-width: 100%;
   }
 }
 
@@ -212,7 +222,7 @@ dialog .menu-img {
 }
 
 /* mouse over link */
-button:hover, input[type="submit"]:hover {
+button:hover, input[type="submit"]:hover, .menu-item-btns .button:hover {
   background-color: hsl(320, 82%, 89%, 0.5);
 }
 
@@ -257,6 +267,8 @@ dialog .shopping-cart {
 .product-info .buttons {
   grid-column: 1/2;
   grid-row: 4/5;
+}
+.product-info .buttons, #modify-item-dialog .buttons, #delete-item-dialog .buttons {
   display: flex;
   gap: 0.5em;
 }
@@ -269,12 +281,12 @@ dialog .shopping-cart {
   margin-top: 5px;
 }
 
-#back-btn-info, #back-btn-login, #back-btn-cart, #addtocart-btn {
+#back-btn-info, #back-btn-login, #back-btn-cart, #addtocart-btn, .back-btn, .modify-btn, .delete-btn{
   padding: 0.75em;
 }
 
 @media screen and (max-width: 640px) {
-  .product-info .buttons {
+  .product-info .buttons,  #modify-item-dialog .buttons, #delete-item-dialog .buttons {
     flex-wrap: wrap-reverse;
   }
 }
@@ -410,7 +422,6 @@ input {
   font-weight: inherit;
   text-transform: inherit;
   color: var(--dark-purple);
-
   transition-duration: 2s;
 }
 
@@ -435,12 +446,63 @@ input {
   font-size: 1.5em;
 }
 
-/* admin menu */
+/* admin sivu -> admin menu sivu*/
+#modify-item-dialog {
+  padding: 3em;
+}
 .admin-container .menu-container {
   grid-column: 2 / 12;
   grid-row: 2 / 3;
 }
 
+/* change layout for displaying modify button */
+.admin-container .menu-item-info {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+}
+
+.menu-item-btns {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  margin-bottom: 0;
+  border-radius: 8px;
+  align-self: center;
+  justify-self: right;
+  padding: 0.5em;
+  text-transform: capitalize;
+  display: flex;
+  align-items: self-end;
+  flex-direction: column;
+
+}
+
+.menu-item-btns button {
+  background-color: var(--white);
+  padding: 0.5em;
+  margin-bottom: 0.25em;
+}
+
+#delete-item-dialog .delete-content {
+  margin-top: 3em;
+  margin-bottom: 3em;
+  text-align: center;
+}
+/* .modify-icon {
+  display: inline-block;
+  background-image: url(../../icons/edit-icon-png-3587.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 1.5em;
+  width: 1.5em;
+} */
+
+
+@media screen and (max-width: 640px) {
+  #modify-item-dialog {
+    padding: 1em 1em;
+  }
+}
 .admin-container .order-container {
   grid-column: 2 / 12;
   grid-row: 2 / 3;

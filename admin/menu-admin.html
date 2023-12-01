@@ -40,10 +40,54 @@
         </li>
       </ul>
     </nav>
-    <div class="menu-container">
+    <div class="menu-container menu-admin">
       <ul class="menu-items">
       </ul>
     </div>
   </div>
+  <dialog id="modify-item-dialog">
+    <section>
+      <h2 id="modify-title">Tuotteen muokkaaminen</h2>
+      <form id="item-modify-form" class="form">
+          <label class="required" for="name">Nimi</label><br>
+          <input type="text" name="name" required/>
+
+          <label class="required" for="price">Hinta</label><br>
+          <input type="text" name="price" required />
+
+          <label for="description">Kuvaus</label><br>
+          <!-- <input type="text" name="description"/> -->
+          <textarea name="description" id="description" cols="30" rows="4"></textarea> <br>
+
+          <label class="required" for="category">Kategory</label><br>
+          <select name="category" id="">
+            <option value="test1">Test1</option>
+            <option value="test2">Test2</option>
+            <option value="test3">Test3</option>
+            <option value="test4">Test4s</option>
+          </select><br>
+          <label for="file">Kuva</label><br>
+          <input type="file" name="file" /><br>
+          <div class="buttons">
+            <button type="button" class="button back-btn" id="modify-back-btn">Takaisin</button>
+            <input type="submit" value="Tallenna" class="button modify-btn" required>
+          </div>
+      </form>
+    </section>
+  </dialog>
+  <dialog id="delete-item-dialog">
+    <section>
+      <h2 id="delete-title">Poista annos</h2>
+      <div class="delete-content">
+        <p>Haluatko varmasti poistaa kaikki annoksen tiedot?</p>
+      </div>
+
+      <div class="buttons">
+        <button type="button" class="button back-btn" id="delete-back-btn">Takaisin</button>
+        <input type="submit" value="Poista" class="button delete-btn" required>
+      </div>
+      </form>
+    </section>
+  </dialog>
 </body>
 </html>
