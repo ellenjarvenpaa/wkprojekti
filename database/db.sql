@@ -44,11 +44,15 @@ CREATE TABLE Offers (
     FOREIGN KEY (dish_id) REFERENCES Dishes(dish_id)
 );
 
+-- payment_status: 'paid' tai 'unpaid'
+-- order status: ?
 CREATE TABLE Orders (
     order_num INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    user_id INT,
-    order_status BOOLEAN NOT NULL,
+    total_amount VARCHAR(255),
+    payment_status VARCHAR(255),
+    order_status VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL,
+    user_id INT,
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
@@ -57,6 +61,7 @@ CREATE TABLE OrderTicket (
     order_num INT NOT NULL,
     dish_id INT NOT NULL,
     dish_price DECIMAL(6,2) NOT NULL,
+    quantity INT NOT NULL,
     created_at TIMESTAMP NOT NULL,
     FOREIGN KEY (order_num) REFERENCES Orders(order_num),
     FOREIGN KEY (dish_id) REFERENCES Dishes(dish_id)
@@ -102,11 +107,12 @@ VALUES (1, 2.9, '2023-12-1', '2023-12-31'), (3, 2.9, '2023-12-1', '2023-12-31'),
 INSERT INTO Orders(order_status)
     VALUES(0),(0);
 
-INSERT INTO Orders(order_num, user_id, order_status)
+-- order status: ?
+INSERT INTO Orders(order_num, user_id, order_status, total_amount, payment_status)
     VALUES(3, 2, 0),(4, 3, 1);
 
-INSERT INTO OrderTicket(order_num, dish_id, dish_price)
-VALUES(1, 1, 3.5), (2, 12, 3.5), (3, 3, 2.9), (3, 11, 3.5), (4, 7, 2.9), (4, 11, 3.5);
+INSERT INTO OrderTicket(order_num, dish_id, dish_price, quantity)
+VALUES(1, 1, 3.5, 1), (2, 12, 3.5, 1), (3, 3, 2.9, 1), (3, 11, 3.5, 1), (4, 7, 2.9, 1), (4, 11, 3.5, 1);
 
 -- Kysely
 -- Valitse kakki katergoriat
