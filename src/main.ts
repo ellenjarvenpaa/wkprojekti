@@ -1,4 +1,4 @@
-import { Menu } from "./interface/Menu";
+import { Dishes, Menu } from "./interface/Menu";
 
 const fetchData = async <T>(url: string, options: RequestInit = {}): Promise<T> => {
 	const response = await fetch(url, options);
@@ -12,7 +12,6 @@ const fetchData = async <T>(url: string, options: RequestInit = {}): Promise<T> 
 
 const apiUrl = 'http://127.0.0.1:3000/';
 const menuItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
-const infoItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
 
 menuItems.forEach((item: Menu) => {
 	const menuText = () => {
@@ -44,46 +43,56 @@ menuItems.forEach((item: Menu) => {
 	const menuTextHtml = menuText();
 	document.querySelector('.menu-items')?.insertAdjacentHTML('beforeend', menuTextHtml);
 
-	});
+});
 
-	/*const infoItemId = document.querySelector('.menu-item');
-	infoItemId?.addEventListener('click', (event) => {
-		const clickedElement = event.target as HTMLElement;
-		const dishName = clickedElement.innerText;
+/*const infoItemId = document.querySelector('.menu-item');
+infoItemId?.addEventListener('click', (event) => {
+	const clickedElement = event.target as HTMLElement;
+	const dishName = clickedElement.innerText;
 
-		console.log('Dish Name:', dishName);
-	});*/
+	console.log('Dish Name:', dishName);
+});*/
 
+const infoItems = await fetchData<Dishes[]>(apiUrl + 'api/dish');
 
-infoItems.forEach((item: Menu) => {
-	const infoText = () => {
-	  let html = `
-	  <img class="menu-img" src="img/cocacola.png" alt="Coca-Cola drink">
-	  <div>
-	  `;
+const infoItemsContainer = document.querySelector('.info-item');
 
-	  item.dishes.forEach((dish) => {
-		const { dish_name, description, dish_price } = dish;
-		html += `
-		<p class="menu-item-name">${dish_name}</p>
-		<p class="menu-item-desc">${description}</p>
-		<p class="menu-item-price">${dish_price}</p>
-		`;
-	  });
+infoItems.forEach(async (item: Dishes) => {
 
-	  html += `
-		</div>
-	  `;
+  const apiUrl = 'http://127.0.0.1:3000/';
+  const dishDetails = await fetchData<Dishes[]>(apiUrl + `api/dish/${item.dish_id}`);
 
-	  return html;
-	};
+  const infoText = () => {
+    let html = `
+      <div class="info-item">
+	 	<h2></h2>
+    `;
 
-	const menuTextHtml = infoText();
-	document.querySelector('.info-item')?.insertAdjacentHTML('beforeend', menuTextHtml);
+    dishDetails.forEach((dish) => {
+      const { dish_name, description, dish_price } = dish;
+      html += `
+        <div class="menu-item">
+          <img class="menu-img" src="img/cocacola.png" alt="${dish_name} drink">
+          <div>
+            <p class="menu-item-name">${dish_name}</p>
+            <p class="menu-item-desc">${description}</p>
+            <p class="menu-item-price">${dish_price}</p>
+          </div>
+        </div>
+      `;
+    });
 
-  });
+    html += `
+      </div>
+    `;
 
+    return html;
+  };
 
+  const infoTextHtml = infoText();
+  infoItemsContainer?.insertAdjacentHTML('beforeend', infoTextHtml);
+
+});
 
 // select dialog element from DOM
 const dialog = document.querySelector('dialog');
