@@ -54,45 +54,41 @@ infoItemId?.addEventListener('click', (event) => {
 });*/
 
 const infoItems = await fetchData<Dishes[]>(apiUrl + 'api/dish');
+console.log(infoItems);
 
 const infoItemsContainer = document.querySelector('.info-item');
 
 infoItems.forEach(async (item: Dishes) => {
+    const dishDetails = await fetchData<Dishes[]>(apiUrl + `api/dish/${item.dish_id}`);
+    console.log(dishDetails);
 
-  const apiUrl = 'http://127.0.0.1:3000/';
-  const dishDetails = await fetchData<Dishes[]>(apiUrl + `api/dish/${item.dish_id}`);
+    const infoText = () => {
+        let html = '';
 
-  const infoText = () => {
-    let html = `
-      <div class="info-item">
-	 	<h2></h2>
-    `;
+        if (dishDetails && Array.isArray(dishDetails)) {
+            dishDetails.forEach((dish) => {
+                const { dish_name, description, dish_price } = dish;
+                html += `
+                    <li class="menu-item">
+                        <img class="menu-img" src="img/cocacola.png" alt="${dish_name} drink">
+                        <div>
+                            <p class="menu-item-name">${dish_name}</p>
+                            <p class="menu-item-desc">${description}</p>
+                            <p class="menu-item-price">${dish_price}</p>
+                        </div>
+                    </li>
+                `;
+            });
+        }
 
-    dishDetails.forEach((dish) => {
-      const { dish_name, description, dish_price } = dish;
-      html += `
-        <div class="menu-item">
-          <img class="menu-img" src="img/cocacola.png" alt="${dish_name} drink">
-          <div>
-            <p class="menu-item-name">${dish_name}</p>
-            <p class="menu-item-desc">${description}</p>
-            <p class="menu-item-price">${dish_price}</p>
-          </div>
-        </div>
-      `;
-    });
+        return html;
+    };
 
-    html += `
-      </div>
-    `;
-
-    return html;
-  };
-
-  const infoTextHtml = infoText();
-  infoItemsContainer?.insertAdjacentHTML('beforeend', infoTextHtml);
-
+    const infoTextHtml = infoText();
+    infoItemsContainer?.insertAdjacentHTML('beforeend', infoTextHtml);
 });
+
+
 
 // select dialog element from DOM
 const dialog = document.querySelector('dialog');
