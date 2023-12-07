@@ -21,10 +21,10 @@ menuItems.forEach((item: Menu) => {
 		`;
 
 		item.dishes.forEach((dish) => {
-			const { dish_name, dish_price } = dish;
+			const { dish_photo, dish_name, dish_price } = dish;
 			html += `
 			<li class="menu-item">
-			<img class="menu-img" src="img/cocacola.png" alt=" drink">
+			<img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt="drink">
 			<div>
 			<p class="menu-item-name">${dish_name}</p>
 			<p class="menu-item-price">${dish_price}</p>
@@ -56,36 +56,36 @@ infoItemId?.addEventListener('click', (event) => {
 const infoItems = await fetchData<Dishes[]>(apiUrl + 'api/dish');
 console.log(infoItems);
 
-const infoItemsContainer = document.querySelector('.info-item');
-
 infoItems.forEach(async (item: Dishes) => {
-    const dishDetails = await fetchData<Dishes[]>(apiUrl + `api/dish/${item.dish_id}`);
+	const dishDetails = await fetchData<Dishes[]>(apiUrl + `api/dish/1`);
     console.log(dishDetails);
 
     const infoText = () => {
-        let html = '';
+		let html = `<ul>`;
 
         if (dishDetails && Array.isArray(dishDetails)) {
-            dishDetails.forEach((dish) => {
-                const { dish_name, description, dish_price } = dish;
+			dishDetails.forEach((dish) => {
+				const { dish_name, description, dish_price } = dish;
                 html += `
-                    <li class="menu-item">
-                        <img class="menu-img" src="img/cocacola.png" alt="${dish_name} drink">
-                        <div>
-                            <p class="menu-item-name">${dish_name}</p>
-                            <p class="menu-item-desc">${description}</p>
-                            <p class="menu-item-price">${dish_price}</p>
-                        </div>
-                    </li>
+				<li class="menu-item">
+				<img class="menu-img" src="img/cocacola.png" alt="${dish_name} drink">
+				<div>
+				<p class="menu-item-name">${dish_name}</p>
+				<p class="menu-item-desc">${description}</p>
+				<p class="menu-item-price">${dish_price}</p>
+				</div>
+				</li>
                 `;
             });
         }
+
+		html += `</ul>`;
 
         return html;
     };
 
     const infoTextHtml = infoText();
-    infoItemsContainer?.insertAdjacentHTML('beforeend', infoTextHtml);
+	document.querySelector('.info-item')?.insertAdjacentHTML('beforeend', infoTextHtml);
 });
 
 

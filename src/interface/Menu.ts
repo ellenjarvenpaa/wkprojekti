@@ -7,6 +7,7 @@ interface Menu {
     dish_id: number;
     dish_name: string;
     dish_price: string;
+    dish_photo: string;
     description: string;
   }
 
