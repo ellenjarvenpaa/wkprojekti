@@ -324,8 +324,9 @@ dialog .shopping-cart {
 
 /* LOGIN Dialog */
 #login-form {
-  display: grid;
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  padding: 1em 2em;
   font-size: 1.5em;
 }
 
@@ -334,8 +335,8 @@ dialog .shopping-cart {
 }
 
 #login-dialog .buttons {
-  grid-column: 1/2;
-  grid-row: 4/5;
+  /* grid-column: 1/2;
+  grid-row: 4/5; */
   display: flex;
   gap: 0.5em;
 }
@@ -343,6 +344,12 @@ dialog .shopping-cart {
 .required::after {
   content: ' *';
   color: var(--red);
+}
+
+@media screen and (max-width: 640px) {
+  #login-form {
+    padding: 0.5em;
+  }
 }
 
 /* Hallinta sivut */
@@ -385,6 +392,8 @@ input {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+
+
 
 /* admin sivu */
 .admin-container {

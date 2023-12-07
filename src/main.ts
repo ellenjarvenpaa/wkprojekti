@@ -1,3 +1,4 @@
+import { fetchData1 } from "./function";
 import { Menu } from "./interface/Menu";
 
 const mockData: Menu[] = [
@@ -175,10 +176,56 @@ closeDialogBtnInfo.addEventListener('click', () => {
 
 const closeDialogBtnLogin = document.querySelector('#back-btn-login') as HTMLButtonElement;
 closeDialogBtnLogin.addEventListener('click', () => {
-	dialog?.close();
+	loginDialog?.close();
 });
 
 const closeDialogBtnCart = document.querySelector('#back-btn-cart') as HTMLButtonElement;
 closeDialogBtnCart.addEventListener('click', () => {
 	dialog?.close();
+});
+
+// select login form from the DOM
+const loginForm = document.querySelector('#login-form') as HTMLFormElement | null;
+// select login inputs from the DOM
+const loginBtn = document.querySelector('#login') as HTMLButtonElement |null;
+const memberNumberInput = document.querySelector(
+  '#member-number'
+) as HTMLInputElement | null;
+const passwordInput = document.querySelector(
+  '#login-password'
+) as HTMLInputElement | null;
+
+if (!loginBtn) {
+	throw new Error('Login button not found');
+}
+// function to login
+const login = async (user: {
+	membernumber: string,
+	password: string
+  }): Promise<LoginUser> => {
+	const options: RequestInit = {
+	  method: 'POST',
+	  headers: {
+		'Content-Type': 'application/json'
+	  },
+	  body: JSON.stringify(user),
+	}
+	return await fetchData1<LoginUser>(apiUrl + 'api/auth/login', options);
+};
+
+
+loginForm?.addEventListener('submit', async (event) => {
+	try {
+		event.preventDefault();
+		const user = {
+			membernumber: loginForm.membernumber.value,
+			password: loginForm.loginpassword.value
+		};
+		const loginData = await login(user);
+		console.log('loginData', loginData);
+		localStorage.setItem('token', loginData.token);
+	} catch (err) {
+		console.log(err);
+	}
+
 });

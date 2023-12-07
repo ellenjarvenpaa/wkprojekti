@@ -88,11 +88,13 @@
       <section>
         <h2 id="login-title">Kirjautuminen</h2>
         <form id="login-form" class="form">
-            <label class="required" for="member-number">Syötä jäsennumero</label><br>
-            <input id="" type="text" name="member-number" required><br>
+            <label class="required" for="membernumber">Jäsennumero</label><br>
+            <input id="membernumber" type="number" name="membernumber" required><br>
+            <label class="required" for="loginpassword">Salasana</label><br>
+            <input id="loginpassword" type="password" name="loginpassword" required><br>
             <div class="buttons">
               <button type="button" class="button" id="back-btn-login">Takaisin</button>
-              <input type="submit" value="Kirjaudu sisään" class="button" required>
+              <button type="submit" class="button" id="login">Kirjaudu sisään</button>
             </div>
         </form>
       </section>
