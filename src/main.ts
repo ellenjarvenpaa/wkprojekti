@@ -9,11 +9,11 @@ const fetchData = async <T>(url: string, options: RequestInit = {}): Promise<T> 
 	return json;
 };
 
-
+// GET
 const apiUrl = 'http://127.0.0.1:3000/';
-const menuItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
+const allMenuItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
 
-menuItems.forEach((item: Menu) => {
+allMenuItems.forEach((item: Menu) => {
 	const menuText = () => {
 		let html = `
 		<h2>${item.category_name}</h2>
@@ -21,7 +21,7 @@ menuItems.forEach((item: Menu) => {
 		`;
 
 		item.dishes.forEach((dish) => {
-			const { dish_photo, dish_name, dish_price, dish_id, description } = dish;
+			const { dish_photo, dish_name, dish_price, dish_id } = dish;
 			html += `
 			<li class="menu-item">
 			<img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt="drink">
@@ -32,30 +32,6 @@ menuItems.forEach((item: Menu) => {
 			</div>
 			</li>
 			`;
-
-			if (document.querySelector('.product-info')?.classList.contains('info-item')) {
-				const infoText = () => {
-					let infoHtml = `
-					<ul>
-					<li class="menu-item">
-					<img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt="drink">
-					<div>
-					<p class="menu-item-name">${dish_name}</p>
-					<p class="menu-item-desc">${description}</p>
-					<p class="menu-item-price">${dish_price}</p>
-					</div>
-					</li>
-					</ul>
-					`
-
-					return infoHtml;
-
-				}
-
-				const infoTextHtml = infoText();
-				document.querySelector('.info-item')?.insertAdjacentHTML('beforeend', infoTextHtml);
-			};
-
 		});
 
 		html += `
@@ -69,6 +45,80 @@ menuItems.forEach((item: Menu) => {
 	document.querySelector('.menu-items')?.insertAdjacentHTML('beforeend', menuTextHtml);
 
 });
+
+// GET ID
+
+  const infoItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
+
+  const fetchDishDetails = async (dishId: number): Promise<Dishes | null> => {
+	try {
+	  const dishDetails = await fetchData<Dishes>(apiUrl + `api/dish/${dishId}`);
+	  return dishDetails;
+	} catch (error) {
+	  console.error(`Error fetching dish details for dish_id ${dishId}:`, error);
+	  return null;
+	}
+  };
+
+  const infoText = async () => {
+	let html = '';
+
+	for (const item of infoItems) {
+	  for (const dish of item.dishes) {
+		const { dish_photo, dish_name, dish_price, dish_id, description } = dish;
+
+		// Convert dish_id to number before passing to fetchDishDetails
+		const dishDetails = await fetchDishDetails(Number(dish_id));
+
+		// Use the fetched details in your HTML
+		html += `
+		  <div class="menu-item" data-dish-id="${dish_id}">
+			<img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt="drink">
+			<div>
+			  <p class="menu-item-name">${dish_name}</p>
+			  <p>${description}</p>
+			  <p class="menu-item-price">${dish_price}</p>
+			  <p>${dish_id}</p>
+			  <!-- Display additional details fetched -->
+			  ${dishDetails ? `<p>Additional Info: ${dishDetails}</p>` : ''}
+			</div>
+		  </div>
+		`;
+	  }
+	}
+
+	return html;
+  };
+
+  const infoTextHtml = await infoText();
+  const infoItemContainer = document.querySelector('.info-item');
+  infoItemContainer?.insertAdjacentHTML('beforeend', infoTextHtml);
+
+  // Add event listener to each menu item
+  const menuItems = document.querySelectorAll('.menu-item');
+  menuItems.forEach((menuItem) => {
+	menuItem.addEventListener('click', (event) => {
+	  const dishId = (event.currentTarget as HTMLElement).getAttribute('data-dish-id');
+	  console.log(dishId);
+	  if (dishId) {
+		displayDishDetails(Number(dishId));
+	  }
+	});
+  });
+
+
+  const displayDishDetails = async (dishId: number) => {
+	const dishDetails = await fetchDishDetails(dishId);
+
+	if (dishDetails) {
+	  // Display the details in a modal, for example
+	  console.log('Dish Details:', dishDetails);
+	  // You can customize this part to show the details in your webpage
+	} else {
+	  console.log('Unable to fetch dish details');
+	}
+  };
+
 
 /*const infoItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
 console.log(infoItems);
