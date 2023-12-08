@@ -21,16 +21,41 @@ menuItems.forEach((item: Menu) => {
 		`;
 
 		item.dishes.forEach((dish) => {
-			const { dish_photo, dish_name, dish_price } = dish;
+			const { dish_photo, dish_name, dish_price, dish_id, description } = dish;
 			html += `
 			<li class="menu-item">
 			<img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt="drink">
 			<div>
 			<p class="menu-item-name">${dish_name}</p>
 			<p class="menu-item-price">${dish_price}</p>
+			<p>${dish_id}<p/>
 			</div>
 			</li>
 			`;
+
+			if (document.querySelector('.product-info')?.classList.contains('info-item')) {
+				const infoText = () => {
+					let infoHtml = `
+					<ul>
+					<li class="menu-item">
+					<img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt="drink">
+					<div>
+					<p class="menu-item-name">${dish_name}</p>
+					<p class="menu-item-desc">${description}</p>
+					<p class="menu-item-price">${dish_price}</p>
+					</div>
+					</li>
+					</ul>
+					`
+
+					return infoHtml;
+
+				}
+
+				const infoTextHtml = infoText();
+				document.querySelector('.info-item')?.insertAdjacentHTML('beforeend', infoTextHtml);
+			};
+
 		});
 
 		html += `
@@ -45,31 +70,20 @@ menuItems.forEach((item: Menu) => {
 
 });
 
-/*const infoItemId = document.querySelector('.menu-item');
-infoItemId?.addEventListener('click', (event) => {
-	const clickedElement = event.target as HTMLElement;
-	const dishName = clickedElement.innerText;
-
-	console.log('Dish Name:', dishName);
-});*/
-
-const infoItems = await fetchData<Dishes[]>(apiUrl + 'api/dish');
+/*const infoItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
 console.log(infoItems);
 
-infoItems.forEach(async (item: Dishes) => {
-	const dishDetails = await fetchData<Dishes[]>(apiUrl + `api/dish/1`);
-    console.log(dishDetails);
-
+infoItems.forEach(async (dish: Menu) => {
     const infoText = () => {
 		let html = `<ul>`;
 
-        if (dishDetails && Array.isArray(dishDetails)) {
-			dishDetails.forEach((dish) => {
-				const { dish_name, description, dish_price } = dish;
+			infoItems.forEach((dish) => {
+				const { dish_name, description, dish_price, dish_photo, dish_id } = dish;
                 html += `
 				<li class="menu-item">
-				<img class="menu-img" src="img/cocacola.png" alt="${dish_name} drink">
+				<img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt="drink">
 				<div>
+				<p>${dish_id}</p>
 				<p class="menu-item-name">${dish_name}</p>
 				<p class="menu-item-desc">${description}</p>
 				<p class="menu-item-price">${dish_price}</p>
@@ -77,7 +91,7 @@ infoItems.forEach(async (item: Dishes) => {
 				</li>
                 `;
             });
-        }
+
 
 		html += `</ul>`;
 
@@ -86,7 +100,7 @@ infoItems.forEach(async (item: Dishes) => {
 
     const infoTextHtml = infoText();
 	document.querySelector('.info-item')?.insertAdjacentHTML('beforeend', infoTextHtml);
-});
+});*/
 
 
 
