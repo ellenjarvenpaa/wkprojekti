@@ -1,3 +1,4 @@
+import { errorModal } from "./components";
 import { fetchData1 } from "./function";
 import { Menu } from "./interface/Menu";
 
@@ -183,7 +184,8 @@ const closeDialogBtnCart = document.querySelector('#back-btn-cart') as HTMLButto
 closeDialogBtnCart.addEventListener('click', () => {
 	dialog?.close();
 });
-
+// select info modal from the DOM
+const infoDialog = document.querySelector('#info') as HTMLDialogElement | null;
 // select login form from the DOM
 const loginForm = document.querySelector('#login-form') as HTMLFormElement | null;
 // select login inputs from the DOM
@@ -197,6 +199,10 @@ const passwordInput = document.querySelector(
 
 if (!loginBtn) {
 	throw new Error('Login button not found');
+}
+
+if (!infoDialog) {
+	throw new Error('Dialog not found');
 }
 // function to login
 const login = async (user: {
@@ -223,9 +229,15 @@ loginForm?.addEventListener('submit', async (event) => {
 		};
 		const loginData = await login(user);
 		console.log('loginData', loginData);
+		// save token to local storage
 		localStorage.setItem('token', loginData.token);
+		// updateDom(loginData.token);
 	} catch (err) {
 		console.log(err);
+		const infoHTML = (err as Error).message + `. Kirjautuminen epäonnistui. Yritä uudelleen`;
+		infoDialog.innerHTML = errorModal(infoHTML);
+		infoDialog.showModal();
+		loginDialog?.close();
 	}
 
 });

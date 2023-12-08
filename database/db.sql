@@ -155,3 +155,6 @@ SET offer_price = 1.9 WHERE dish_id = 1;
 -- Poista tarjousannos
 DELETE FROM Offers
 WHERE dish_id = 1;
+
+INSERT INTO Offers(dish_id, offer_price, start_date, end_date)
+VALUES(1, 2.00, '2023-12-07', '2023-12-31');

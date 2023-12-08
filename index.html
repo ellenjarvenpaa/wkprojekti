@@ -89,7 +89,7 @@
         <h2 id="login-title">Kirjautuminen</h2>
         <form id="login-form" class="form">
             <label class="required" for="membernumber">Jäsennumero</label><br>
-            <input id="membernumber" type="number" name="membernumber" required><br>
+            <input id="membernumber" type="number" name="membernumber" minlength="4" required><br>
             <label class="required" for="loginpassword">Salasana</label><br>
             <input id="loginpassword" type="password" name="loginpassword" required><br>
             <div class="buttons">
@@ -115,6 +115,9 @@
             <button type="button" class="button" id="paymentbtn">Maksamaan</button>
           </div>
       </section>
+    </dialog>
+    <dialog id="info">
+
     </dialog>
   </body>
 </html>
