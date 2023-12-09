@@ -8,6 +8,7 @@ interface Menu {
     dish_name: string;
     dish_price: string;
     description: string;
+    dish_photo: string;
   }
 
 export type {Menu, Dishes}
