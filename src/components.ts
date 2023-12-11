@@ -9,7 +9,7 @@ const menuListHtmlForOffers = (dishes: OfferDish[]): string => {
 		const {dish_name, dish_price, offer_price, description, dish_photo} = dish;
 		html +=`
 			<li class="menu-item">
-				<img class="menu-img" src="../img/cocacola.png" alt=" drink">
+				<img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt=" drink">
 				<div class="menu-item-info">
 					<p class="menu-item-name">${dish_name}</p>
 					<p class="menu-item-price">
