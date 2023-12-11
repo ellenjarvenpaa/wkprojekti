@@ -153,6 +153,7 @@ const infoDialog = document.querySelector('#info') as HTMLDialogElement | null;
 
 // select menu item elements from DOM
 const menuItemEls = document.querySelectorAll('.menu-item');
+console.log(menuItemEls);
 menuItemEls.forEach((item) => {
 	item.addEventListener('click', () => {
 		menuItemDialog?.showModal();
@@ -254,10 +255,19 @@ const checkToken = async () => {
 	const addMenuToDOM = (menuItemsWithOffers: Menu[]) => {
 		const target = document.querySelector('.menu-items') as HTMLUListElement | null;
 		const html = menuListHtml(menuItemsWithOffers);
-		console.log(html);
 		target?.insertAdjacentHTML('beforeend', html);
 	}
 	addMenuToDOM(menuItemsWithOffers);
+	// select menu item elements from DOM
+	const menuItemEls = document.querySelectorAll('.menu-item');
+	console.log(menuItemEls);
+	menuItemEls.forEach((item) => {
+		item.addEventListener('click', () => {
+			menuItemDialog?.showModal();
+		})
+		document.body.style.overflow = "auto";
+	});
+
 
 }
 
@@ -339,4 +349,5 @@ profileIconE?.addEventListener('click', () => {
 	}
 
 });
+
 
