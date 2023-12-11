@@ -14,7 +14,7 @@
 }
 
 :root {
-  --black: #000;
+  --black: #000000de;
   --white: #F6F6F7;
   --pink: #FACBEA;
   --beige: #FFE4D6;
@@ -80,6 +80,10 @@ a {
   height: auto;
 }
 
+.hidden {
+  display: none;
+}
+
 .nav-item:hover {
   transform: scale(1.1);
   transition-duration: 1s;
@@ -134,6 +138,16 @@ h2 {
 
 .menu-item p {
   text-align: center;
+}
+
+.menu-item .old {
+  text-decoration: line-through;
+  color: var(--black);
+  margin-right: 0.2em;
+}
+
+.menu-item .sale {
+  color: var(--red);
 }
 
 .menu-item .menu-img {
@@ -281,7 +295,8 @@ dialog .shopping-cart {
   margin-top: 5px;
 }
 
-#back-btn-info, #back-btn-login, #back-btn-cart, #addtocart-btn, .back-btn, .modify-btn, .delete-btn{
+#back-btn-info, #back-btn-login, #back-btn-cart, #addtocart-btn,
+.back-btn, .modify-btn, .delete-btn, #back-btn-success, #back-btn-error{
   padding: 0.75em;
 }
 

@@ -158,3 +158,7 @@ WHERE dish_id = 1;
 
 INSERT INTO Offers(dish_id, offer_price, start_date, end_date)
 VALUES(1, 2.00, '2023-12-07', '2023-12-31');
+
+SELECT Dishes.dish_id, dish_name, Dishes.dish_price, offer_price, description, dish_photo
+FROM Offers, Dishes
+WHERE Offers.dish_id = Dishes.dish_id;

@@ -21,10 +21,10 @@ const menuText = () => {
 	`;
 
 	item.dishes.forEach((dish) => {
-		const { dish_name, dish_price } = dish;
+		const { dish_name, dish_price, dish_photo } = dish;
 		html += `
 			<li class="menu-item">
-			<img class="menu-img" src="../img/cocacola.png" alt=" drink">
+			<img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt=" drink">
 			<div class="menu-item-info">
 				<p class="menu-item-name">${dish_name}</p>
 				<p class="menu-item-price">${dish_price}</p>

@@ -1,6 +1,7 @@
-import { errorModal } from "./components";
+import { errorModal, menuListHtml, menuListHtmlForOffers, successModal } from "./components";
 import { fetchData1 } from "./function";
 import { Menu } from "./interface/Menu";
+import { Offer } from "./interface/Offer";
 
 const mockData: Menu[] = [
 	{
@@ -148,6 +149,7 @@ const dialog = document.querySelector('dialog');
 const menuItemDialog = document.querySelector('#product-info-dialog') as HTMLDialogElement | null;
 const loginDialog = document.querySelector('#login-dialog') as HTMLDialogElement | null;
 const shoppingCartDialog = document.querySelector('#shopping-cart-dialog') as HTMLDialogElement | null;
+const infoDialog = document.querySelector('#info') as HTMLDialogElement | null;
 
 // select menu item elements from DOM
 const menuItemEls = document.querySelectorAll('.menu-item');
@@ -158,11 +160,7 @@ menuItemEls.forEach((item) => {
 	document.body.style.overflow = "auto";
 });
 
-const profileIconE = document.querySelector('#profile-icon') as HTMLElement | null;
-profileIconE?.addEventListener('click', () => {
-	loginDialog?.showModal();
-	document.body.style.overflow = "auto";
-});
+
 
 const shoppingCartIcon = document.querySelector('#shopping-cart-icon') as HTMLElement | null;
 shoppingCartIcon?.addEventListener('click', () => {
@@ -180,15 +178,18 @@ closeDialogBtnLogin.addEventListener('click', () => {
 	loginDialog?.close();
 });
 
+
+
 const closeDialogBtnCart = document.querySelector('#back-btn-cart') as HTMLButtonElement;
 closeDialogBtnCart.addEventListener('click', () => {
 	dialog?.close();
 });
 // select info modal from the DOM
-const infoDialog = document.querySelector('#info') as HTMLDialogElement | null;
 // select login form from the DOM
 const loginForm = document.querySelector('#login-form') as HTMLFormElement | null;
 // select login inputs from the DOM
+const profileIconE = document.querySelector('#profile-icon') as HTMLElement | null;
+
 const loginBtn = document.querySelector('#login') as HTMLButtonElement |null;
 const memberNumberInput = document.querySelector(
   '#member-number'
@@ -219,25 +220,123 @@ const login = async (user: {
 	return await fetchData1<LoginUser>(apiUrl + 'api/auth/login', options);
 };
 
+// function to check if token exists and dipsplay offers
+const checkToken = async () => {
+	const token = localStorage.getItem('token');
+	// console.log(token);
+	if (!token) {
+		return;
+	}
+	const offerData = await getOffers(token);
+	// select menu element from DOM
+	const target = document.querySelector('.menu-items') as HTMLUListElement | null;
+	// empty old menu
+	if (target) {
+		target.innerHTML = '';
+	}
+	// add offers to DOM
+	const addOffersToDOM = (offerData: Offer) => {
+		const target = document.querySelector('.menu-items') as HTMLUListElement | null;
+		// render offer
+		const html = menuListHtmlForOffers(offerData.offer_dishes);
+		console.log(offerData);
+		target?.insertAdjacentHTML('afterbegin', html);
 
-loginForm?.addEventListener('submit', async (event) => {
-	try {
-		event.preventDefault();
-		const user = {
-			membernumber: loginForm.membernumber.value,
-			password: loginForm.loginpassword.value
-		};
-		const loginData = await login(user);
-		console.log('loginData', loginData);
-		// save token to local storage
-		localStorage.setItem('token', loginData.token);
-		// updateDom(loginData.token);
-	} catch (err) {
-		console.log(err);
-		const infoHTML = (err as Error).message + `. Kirjautuminen epäonnistui. Yritä uudelleen`;
-		infoDialog.innerHTML = errorModal(infoHTML);
+		// display offer icon on nav bar
+		const navBarDiscount = document.querySelector('.nav-item.discount');
+		navBarDiscount?.classList.remove('hidden');
+	}
+	addOffersToDOM(offerData);
+
+	const menuItemsWithOffers = await getDishesWithOffers(token);
+	console.log(menuItemsWithOffers);
+	// add menu with offers to DOM
+	const addMenuToDOM = (menuItemsWithOffers: Menu[]) => {
+		const target = document.querySelector('.menu-items') as HTMLUListElement | null;
+		const html = menuListHtml(menuItemsWithOffers);
+		console.log(html);
+		target?.insertAdjacentHTML('beforeend', html);
+	}
+	addMenuToDOM(menuItemsWithOffers);
+
+}
+
+// function to get user offers
+const getOffers = async (token: string):Promise<Offer> => {
+	const options: RequestInit = {
+		method: 'GET',
+		headers: {
+			 Authorization: 'Bearer ' + token,
+			'Content-Type': 'application/json'
+		}
+	};
+	return await fetchData1<Offer>(apiUrl + 'api/dish/offers', options);
+}
+
+// function to get menu when user is logged on
+const getDishesWithOffers = async (token: string):Promise<Menu[]> => {
+	const options: RequestInit = {
+		method: 'GET',
+		headers: {
+			 Authorization: 'Bearer ' + token,
+			'Content-Type': 'application/json'
+		}
+	};
+	return await fetchData1<Menu[]>(apiUrl + 'api/dish/logged', options);
+}
+
+checkToken();
+
+profileIconE?.addEventListener('click', () => {
+	const userToken = localStorage.getItem('token') as string | null;
+	// if user is not logged in yet, show login modal
+	if (userToken === null) {
+		loginDialog?.showModal();
+		document.body.style.overflow = "auto";
+
+		loginForm?.addEventListener('submit', async (event) => {
+			try {
+				event.preventDefault();
+				const user = {
+					membernumber: loginForm.membernumber.value,
+					password: loginForm.loginpassword.value
+				};
+				const loginData = await login(user);
+				console.log('loginData', loginData);
+				// save token to local storage
+				localStorage.setItem('token', loginData.token);
+				loginDialog?.close();
+
+				// update DOM using token
+				// updateDom(loginData.token);
+				checkToken();
+
+			} catch (err) {
+				console.log(err);
+				const infoHTML = (err as Error).message + `. Kirjautuminen epäonnistui. Yritä uudelleen`;
+				infoDialog.innerHTML = errorModal(infoHTML);
+				infoDialog.showModal();
+				loginDialog?.close();
+				const closeDialogBtnError = document.querySelector('#back-btn-error') as HTMLButtonElement;
+				closeDialogBtnError?.addEventListener('click', () => {
+					infoDialog?.close();
+				});
+				console.log('close button', closeDialogBtnError);
+				console.log(infoDialog);
+			}
+
+		});
+	} else {
+		// user is already logged in
+		const infoHTML = `Olet nyt kirjautunut sisään. Nauti tarjouksistasi!`;
+		infoDialog.innerHTML = successModal(infoHTML);
 		infoDialog.showModal();
-		loginDialog?.close();
+		// close info dialog
+		const closeDialogBtnSuccess = document.querySelector('#back-btn-success') as HTMLButtonElement | null;
+		closeDialogBtnSuccess?.addEventListener('click', () => {
+			infoDialog?.close();
+		});
 	}
 
 });
+
