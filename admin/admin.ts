@@ -12,12 +12,28 @@ const fetchData = async <T>(url: string, options: RequestInit = {}): Promise<T> 
 
 const apiUrl = 'http://127.0.0.1:3000/';
 const menuItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
+const fetchData = async <T>(url: string, options: RequestInit = {}): Promise<T> => {
+	const response = await fetch(url, options);
+		if (!response.ok) {
+			throw new Error(`Error ${response.status} occured`);
+		}
+	const json = response.json();
+	return json;
+};
 
+
+const apiUrl = 'http://127.0.0.1:3000/';
+const menuItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
+
+menuItems.forEach((item: Menu) => {
+const menuText = () => {
+	let html = `
 menuItems.forEach((item: Menu) => {
 const menuText = () => {
 	let html = `
 		<h2>${item.category_name}</h2>
 		<ul class="menu-list">
+	`;
 	`;
 
 	item.dishes.forEach((dish) => {
@@ -51,7 +67,13 @@ const menuText = () => {
 
 	</ul>
 	`;
+	html += `
 
+	</ul>
+	`;
+
+	return html;
+};
 	return html;
 };
 

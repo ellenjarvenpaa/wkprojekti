@@ -1,147 +1,114 @@
 import { errorModal, menuListHtml, menuListHtmlForOffers, successModal } from "./components";
 import { fetchData1 } from "./function";
-import { Menu } from "./interface/Menu";
+import { Dishes, Menu } from "./interface/Menu";
 import { Offer } from "./interface/Offer";
 
-const mockData: Menu[] = [
-	{
-	  category_name: "Jäätelöt",
-	  dishes: [
-		{
-		  dish_id: 1,
-		  dish_name: "Coca-cola",
-		  dish_price: "3.50",
-		  description: "Coca-cola",
-		},
-		{
-		  dish_id: 2,
-		  dish_name: "Fanta",
-		  dish_price: "3.50",
-		  description: "Fanta",
-		},
-		{
-		  dish_id: 6,
-		  dish_name: "Fanta2",
-		  dish_price: "3.50",
-		  description: "Fanta2",
-		},
-	  ],
-	},
-	{
-	  category_name: "Leivonnaiset",
-	  dishes: [
-		{
-		  dish_id: 3,
-		  dish_name: "Kinuskikakku",
-		  dish_price: "4.50",
-		  description: "Kinuski",
-		},
-		{
-		  dish_id: 4,
-		  dish_name: "Punainen sametti",
-		  dish_price: "4.00",
-		  description: "Punainen sametti kakku",
-		},
-	  ],
-	},
-	{
-		category_name: "Kakut",
-	  dishes: [
-		{
-		  dish_id: 3,
-		  dish_name: "Kinuskikakku",
-		  dish_price: "4.50",
-		  description: "Kinuski",
-		},
-		{
-		  dish_id: 4,
-		  dish_name: "Punainen sametti",
-		  dish_price: "4.00",
-		  description: "Punainen sametti kakku",
-		},
-	  ],
+const fetchData = async <T>(url: string, options: RequestInit = {}): Promise<T> => {
+	const response = await fetch(url, options);
+		if (!response.ok) {
+			throw new Error(`Error ${response.status} occured`);
+		}
+	const json = response.json();
+	return json;
+};
 
-	},
-	{
-		category_name: "Kylmät juomat",
-	  dishes: [
-		{
-		  dish_id: 3,
-		  dish_name: "Kinuskikakku",
-		  dish_price: "4.50",
-		  description: "Kinuski",
-		},
-		{
-		  dish_id: 4,
-		  dish_name: "Punainen sametti",
-		  dish_price: "4.00",
-		  description: "Punainen sametti kakku",
-		},
-	  ],
-	},
-	{
-		category_name: "Kuumat juomat",
-	  dishes: [
-		{
-		  dish_id: 3,
-		  dish_name: "Kinuskikakku",
-		  dish_price: "4.50",
-		  description: "Kinuski",
-		},
-		{
-		  dish_id: 4,
-		  dish_name: "Punainen sametti",
-		  dish_price: "4.00",
-		  description: "Punainen sametti kakku",
-		},
-	  ],
-	}
-  ];
+// GET
+const apiUrl = 'http://127.0.0.1:3000/';
+const allMenuItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
 
-async function fetchData<T>(url: string, mockData?: T): Promise<T> {
-	if (mockData) {
-	  return mockData;
-	} else {
-	  const response = await fetch(url);
-	  const data = await response.json();
-	  return data as T;
-	}
-  }
-
-  const apiUrl = 'http://localhost:3000/';
-  const menuItems = await fetchData<Menu[]>(apiUrl, mockData);
-
-  menuItems.forEach((item: Menu) => {
+allMenuItems.forEach((item: Menu) => {
 	const menuText = () => {
-	  let html = `
+		let html = `
 		<h2>${item.category_name}</h2>
 		<ul class="menu-list">
-	  `;
-
-	  item.dishes.forEach((dish) => {
-		const { dish_name, dish_price } = dish;
-		html += `
-		  <li class="menu-item">
-			<img class="menu-img" src="img/cocacola.png" alt=" drink">
-			<div class="menu-item-info">
-			  <p class="menu-item-name">${dish_name}</p>
-			  <p class="menu-item-price">${dish_price}</p>
-			</div>
-		  </li>
 		`;
-	  });
 
-	  html += `
+		item.dishes.forEach((dish) => {
+			const { dish_photo, dish_name, dish_price, dish_id } = dish;
+			html += `
+			<li class="menu-item" data-dish-id=${dish_id}>
+			<img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt="drink">
+			<div>
+			<p class="menu-item-name">${dish_name}</p>
+			<p class="menu-item-price">${dish_price}</p>
+			</div>
+			</li>
+			`;
+		});
+
+		html += `
 		</ul>
-	  `;
+		`;
 
-	  return html;
+		return html;
 	};
 
 	const menuTextHtml = menuText();
 	document.querySelector('.menu-items')?.insertAdjacentHTML('beforeend', menuTextHtml);
 
+});
+
+// GET ID
+
+const fetchDishDetails = async (dishId: number): Promise<Dishes | null> => {
+	try {
+	  const dishDetails = await fetchData<Dishes>(apiUrl + `api/dish/${dishId}`);
+	  return dishDetails;
+	} catch (error) {
+	  console.error(`Error fetching dish details for dish_id ${dishId}:`, error);
+	  return null;
+	}
+  };
+
+  // Add event listener to each menu item
+  const menuItems = document.querySelectorAll('.menu-item');
+  menuItems.forEach((menuItem) => {
+	menuItem.addEventListener('click', (event) => {
+	  const dishId = (event.currentTarget as HTMLElement).dataset.dishId;
+	  console.log(dishId);
+	  if (dishId) {
+		displayDishDetails(Number(dishId));
+	  }
+	});
   });
+
+  const displayDishDetails = async (dishId: number) => {
+	const dishDetails = await fetchDishDetails(dishId);
+
+	if (dishDetails) {
+	  // Display the details in a modal, for example
+	  console.log('Dish Details:', dishDetails);
+
+	  const { dish_photo, dish_name, dish_price, dish_id, description } = dishDetails;
+
+	  // Use the fetched details in your HTML
+	  const html = `
+		<div class="menu-item" data-dish-id="${dish_id}">
+		  <img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt="drink">
+		  <div>
+			<p class="menu-item-name">${dish_name}</p>
+			<p>${description}</p>
+			<p class="menu-item-price">${dish_price}</p>
+		  </div>
+		</div>
+	  `;
+
+	  const infoItemContainer = document.querySelector('.info-item');
+
+	  // Check if infoItemContainer is not null before manipulating it
+	  if (infoItemContainer) {
+		// Clear existing content before inserting the new HTML
+		infoItemContainer.innerHTML = '';
+
+		infoItemContainer.insertAdjacentHTML('beforeend', html);
+	  } else {
+		console.error('infoItemContainer is null');
+	  }
+	} else {
+	  console.log('Unable to fetch dish details');
+	}
+  };
+
 
 
 // select dialog element from DOM
@@ -184,6 +151,22 @@ closeDialogBtnLogin.addEventListener('click', () => {
 const closeDialogBtnCart = document.querySelector('#back-btn-cart') as HTMLButtonElement;
 closeDialogBtnCart.addEventListener('click', () => {
 	dialog?.close();
+});
+
+const plusBtn = document.querySelector('#quantity-plus') as HTMLButtonElement;
+plusBtn.addEventListener('click', () => {
+    const quantityElement = document.querySelector('.quantity-number') as HTMLInputElement;
+    let quantity = parseInt(quantityElement.value)
+    quantity++;
+    quantityElement.value = quantity.toString();
+});
+
+const minusBtn = document.querySelector('#quantity-minus') as HTMLButtonElement;
+minusBtn.addEventListener('click', () => {
+    const quantityElement = document.querySelector('.quantity-number') as HTMLInputElement;
+    let quantity = parseInt(quantityElement.value);
+    quantity--;
+    quantityElement.value = quantity.toString();
 });
 // select info modal from the DOM
 // select login form from the DOM
