@@ -128,8 +128,6 @@ menuItemEls.forEach((item) => {
 	document.body.style.overflow = "auto";
 });
 
-
-
 const shoppingCartIcon = document.querySelector('#shopping-cart-icon') as HTMLElement | null;
 shoppingCartIcon?.addEventListener('click', () => {
 	shoppingCartDialog?.showModal();
