@@ -1,4 +1,4 @@
-import { Menu } from "../src/interface/Menu";
+import { Menu, Dishes } from "../src/interface/Menu";
 
   const fetchData = async <T>(url: string, options: RequestInit = {}): Promise<T> => {
 	const response = await fetch(url, options);
@@ -11,9 +11,9 @@ import { Menu } from "../src/interface/Menu";
 
 
   const apiUrl = 'http://127.0.0.1:3000/';
-  const menuItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
+  const allMenuItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
 
-  const filteredCategories = menuItems.filter((category) => category.category_name === 'Kakut');
+  const filteredCategories = allMenuItems.filter((category) => category.category_name === 'Kakut');
 
   filteredCategories.forEach((item: Menu) => {
 	const menuText = () => {
@@ -46,6 +46,67 @@ import { Menu } from "../src/interface/Menu";
 	document.querySelector('.menu-items')?.insertAdjacentHTML('beforeend', menuTextHtml);
 
   });
+
+  // GET ID
+
+const fetchDishDetails = async (dishId: number): Promise<Dishes | null> => {
+	try {
+	  const dishDetails = await fetchData<Dishes>(apiUrl + `api/dish/${dishId}`);
+	  return dishDetails;
+	} catch (error) {
+	  console.error(`Error fetching dish details for dish_id ${dishId}:`, error);
+	  return null;
+	}
+  };
+
+  // Add event listener to each menu item
+  const menuItems = document.querySelectorAll('.menu-item');
+  menuItems.forEach((menuItem) => {
+	menuItem.addEventListener('click', (event) => {
+	  const dishId = (event.currentTarget as HTMLElement).dataset.dishId;
+	  console.log(dishId);
+	  if (dishId) {
+		displayDishDetails(Number(dishId));
+	  }
+	});
+  });
+
+  const displayDishDetails = async (dishId: number) => {
+	const dishDetails = await fetchDishDetails(dishId);
+
+	if (dishDetails) {
+	  // Display the details in a modal, for example
+	  console.log('Dish Details:', dishDetails);
+
+	  const { dish_photo, dish_name, dish_price, dish_id, description } = dishDetails;
+
+	  // Use the fetched details in your HTML
+	  const html = `
+		<div class="menu-item" data-dish-id="${dish_id}">
+		  <img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt="drink">
+		  <div>
+			<p class="menu-item-name">${dish_name}</p>
+			<p>${description}</p>
+			<p class="menu-item-price">${dish_price}</p>
+		  </div>
+		</div>
+	  `;
+
+	  const infoItemContainer = document.querySelector('.info-item');
+
+	  // Check if infoItemContainer is not null before manipulating it
+	  if (infoItemContainer) {
+		// Clear existing content before inserting the new HTML
+		infoItemContainer.innerHTML = '';
+
+		infoItemContainer.insertAdjacentHTML('beforeend', html);
+	  } else {
+		console.error('infoItemContainer is null');
+	  }
+	} else {
+	  console.log('Unable to fetch dish details');
+	}
+  };
 
   // select dialog element from DOM
 const dialog = document.querySelector('dialog');

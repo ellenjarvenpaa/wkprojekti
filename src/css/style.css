@@ -127,6 +127,8 @@ h2 {
 
 .info-item {
   padding: 2em;
+  padding-bottom: 0em;
+  padding-top: 0em;
 }
 
 .menu-item p {

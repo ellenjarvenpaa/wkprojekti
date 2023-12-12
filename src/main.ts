@@ -23,12 +23,11 @@ allMenuItems.forEach((item: Menu) => {
 		item.dishes.forEach((dish) => {
 			const { dish_photo, dish_name, dish_price, dish_id } = dish;
 			html += `
-			<li class="menu-item">
+			<li class="menu-item" data-dish-id=${dish_id}>
 			<img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt="drink">
 			<div>
 			<p class="menu-item-name">${dish_name}</p>
 			<p class="menu-item-price">${dish_price}</p>
-			<p>${dish_id}<p/>
 			</div>
 			</li>
 			`;
@@ -48,9 +47,7 @@ allMenuItems.forEach((item: Menu) => {
 
 // GET ID
 
-  const infoItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
-
-  const fetchDishDetails = async (dishId: number): Promise<Dishes | null> => {
+const fetchDishDetails = async (dishId: number): Promise<Dishes | null> => {
 	try {
 	  const dishDetails = await fetchData<Dishes>(apiUrl + `api/dish/${dishId}`);
 	  return dishDetails;
@@ -60,45 +57,11 @@ allMenuItems.forEach((item: Menu) => {
 	}
   };
 
-  const infoText = async () => {
-	let html = '';
-
-	for (const item of infoItems) {
-	  for (const dish of item.dishes) {
-		const { dish_photo, dish_name, dish_price, dish_id, description } = dish;
-
-		// Convert dish_id to number before passing to fetchDishDetails
-		const dishDetails = await fetchDishDetails(Number(dish_id));
-
-		// Use the fetched details in your HTML
-		html += `
-		  <div class="menu-item" data-dish-id="${dish_id}">
-			<img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt="drink">
-			<div>
-			  <p class="menu-item-name">${dish_name}</p>
-			  <p>${description}</p>
-			  <p class="menu-item-price">${dish_price}</p>
-			  <p>${dish_id}</p>
-			  <!-- Display additional details fetched -->
-			  ${dishDetails ? `<p>Additional Info: ${dishDetails}</p>` : ''}
-			</div>
-		  </div>
-		`;
-	  }
-	}
-
-	return html;
-  };
-
-  const infoTextHtml = await infoText();
-  const infoItemContainer = document.querySelector('.info-item');
-  infoItemContainer?.insertAdjacentHTML('beforeend', infoTextHtml);
-
   // Add event listener to each menu item
   const menuItems = document.querySelectorAll('.menu-item');
   menuItems.forEach((menuItem) => {
 	menuItem.addEventListener('click', (event) => {
-	  const dishId = (event.currentTarget as HTMLElement).getAttribute('data-dish-id');
+	  const dishId = (event.currentTarget as HTMLElement).dataset.dishId;
 	  console.log(dishId);
 	  if (dishId) {
 		displayDishDetails(Number(dishId));
@@ -106,51 +69,42 @@ allMenuItems.forEach((item: Menu) => {
 	});
   });
 
-
   const displayDishDetails = async (dishId: number) => {
 	const dishDetails = await fetchDishDetails(dishId);
 
 	if (dishDetails) {
 	  // Display the details in a modal, for example
 	  console.log('Dish Details:', dishDetails);
-	  // You can customize this part to show the details in your webpage
+
+	  const { dish_photo, dish_name, dish_price, dish_id, description } = dishDetails;
+
+	  // Use the fetched details in your HTML
+	  const html = `
+		<div class="menu-item" data-dish-id="${dish_id}">
+		  <img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt="drink">
+		  <div>
+			<p class="menu-item-name">${dish_name}</p>
+			<p>${description}</p>
+			<p class="menu-item-price">${dish_price}</p>
+		  </div>
+		</div>
+	  `;
+
+	  const infoItemContainer = document.querySelector('.info-item');
+
+	  // Check if infoItemContainer is not null before manipulating it
+	  if (infoItemContainer) {
+		// Clear existing content before inserting the new HTML
+		infoItemContainer.innerHTML = '';
+
+		infoItemContainer.insertAdjacentHTML('beforeend', html);
+	  } else {
+		console.error('infoItemContainer is null');
+	  }
 	} else {
 	  console.log('Unable to fetch dish details');
 	}
   };
-
-
-/*const infoItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
-console.log(infoItems);
-
-infoItems.forEach(async (dish: Menu) => {
-    const infoText = () => {
-		let html = `<ul>`;
-
-			infoItems.forEach((dish) => {
-				const { dish_name, description, dish_price, dish_photo, dish_id } = dish;
-                html += `
-				<li class="menu-item">
-				<img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt="drink">
-				<div>
-				<p>${dish_id}</p>
-				<p class="menu-item-name">${dish_name}</p>
-				<p class="menu-item-desc">${description}</p>
-				<p class="menu-item-price">${dish_price}</p>
-				</div>
-				</li>
-                `;
-            });
-
-
-		html += `</ul>`;
-
-        return html;
-    };
-
-    const infoTextHtml = infoText();
-	document.querySelector('.info-item')?.insertAdjacentHTML('beforeend', infoTextHtml);
-});*/
 
 
 
