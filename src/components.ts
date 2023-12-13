@@ -6,7 +6,7 @@ const apiUrl = 'http://127.0.0.1:3000/';
 const menuListHtmlForOffers = (dishes: OfferDish[]): string => {
 	let html = '<h2>Tarjoukset</h2><ul class="menu-list">';
 	dishes.forEach((dish) => {
-		const {dish_name, dish_price, offer_price, description, dish_photo} = dish;
+		const {dish_name, dish_price, offer_price, dish_photo} = dish;
 		html +=`
 			<li class="menu-item">
 				<img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt=" drink">

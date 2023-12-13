@@ -192,12 +192,12 @@ const loginForm = document.querySelector('#login-form') as HTMLFormElement | nul
 const profileIconE = document.querySelector('#profile-icon') as HTMLElement | null;
 
 const loginBtn = document.querySelector('#login') as HTMLButtonElement |null;
-const memberNumberInput = document.querySelector(
-  '#member-number'
-) as HTMLInputElement | null;
-const passwordInput = document.querySelector(
-  '#login-password'
-) as HTMLInputElement | null;
+// const memberNumberInput = document.querySelector(
+//   '#member-number'
+// ) as HTMLInputElement | null;
+// const passwordInput = document.querySelector(
+//   '#login-password'
+// ) as HTMLInputElement | null;
 
 if (!loginBtn) {
 	throw new Error('Login button not found');
