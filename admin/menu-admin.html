@@ -50,25 +50,25 @@
       <h2 id="modify-title">Tuotteen muokkaaminen</h2>
       <form id="item-modify-form" class="form">
           <label class="required" for="name">Nimi</label><br>
-          <input type="text" name="name" required/>
+          <input type="text" name="dish_name" required/>
 
           <label class="required" for="price">Hinta</label><br>
-          <input type="text" name="price" required />
+          <input type="text" name="dish_price" required />
 
           <label for="description">Kuvaus</label><br>
           <!-- <input type="text" name="description"/> -->
           <textarea name="description" id="description" cols="30" rows="4"></textarea> <br>
 
           <label class="required" for="category">Kategory</label><br>
-          <select name="category" id="">
-            <option value="test1">Jäätelöt</option>
-            <option value="test2">Leivonnaiset</option>
-            <option value="test3">Kakut</option>
-            <option value="test4">Kylmät juomat</option>
-            <option value="test5">Kuumat juomat</option>
+          <select name="category_id" id="">
+            <option value="1">Jäätelöt</option>
+            <option value="2">Leivonnaiset</option>
+            <option value="3">Kakut</option>
+            <option value="4">Kylmät juomat</option>
+            <option value="5">Kuumat juomat</option>
           </select><br>
           <label for="file">Kuva</label><br>
-          <input type="file" name="file" /><br>
+          <input type="file" name="dish_photo" /><br>
           <div class="buttons">
             <button type="button" class="button back-btn" id="modify-back-btn">Takaisin</button>
             <input type="submit" value="Tallenna" class="button modify-btn" id="modify-submit-btn" required>
@@ -82,7 +82,6 @@
       <div class="delete-content">
         <p>Haluatko varmasti poistaa kaikki annoksen tiedot?</p>
       </div>
-
       <div class="buttons">
         <button type="button" class="button back-btn" id="delete-back-btn">Takaisin</button>
         <input type="submit" value="Poista" class="button delete-btn" required>
