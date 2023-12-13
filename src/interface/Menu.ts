@@ -1,5 +1,6 @@
 interface Menu {
     category_name: string;
+    category_id: number;
     dishes: Dishes[];
   }
 

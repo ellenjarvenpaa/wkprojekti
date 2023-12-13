@@ -70,14 +70,14 @@ a {
 .nav {
   background-color: var(--pink);
   display: grid;
-  grid-template-rows: repeat(11, 1fr);
-  position: sticky;
+  grid-template-rows: repeat(6, 1fr);
+  position: fixed;
 }
 
 .nav-item {
   text-align: center;
-  padding-top: 30px;
   height: auto;
+  padding: 20px;
 }
 
 .hidden {
@@ -168,13 +168,8 @@ h2 {
   grid-column:  1 / -1;
 }
 
-.info-item .menu-img {
-  width: 100%;
-  /* max-width: 250px; */
-  margin: auto;
-  display: block;
-  grid-column:  1 / -1;
-  grid-row: 1 / 2;
+.menu-img {
+  height: 300px;
 }
 
 .info-item .menu-img {
