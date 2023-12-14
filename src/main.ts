@@ -20,7 +20,7 @@ const allMenuItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
 allMenuItems.forEach((item: Menu) => {
 	const menuText = () => {
 		let html = `
-		<h2>${item.category_name}</h2>
+		<h2 id="${item.category_name}">${item.category_name}</h2>
 		<ul class="menu-list">
 		`;
 
@@ -150,8 +150,6 @@ const closeDialogBtnLogin = document.querySelector('#back-btn-login') as HTMLBut
 closeDialogBtnLogin.addEventListener('click', () => {
 	loginDialog?.close();
 });
-
-
 
 const closeDialogBtnCart = document.querySelector('#back-btn-cart') as HTMLButtonElement;
 closeDialogBtnCart.addEventListener('click', () => {
