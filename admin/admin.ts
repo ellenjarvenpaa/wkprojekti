@@ -18,7 +18,7 @@ const allMenuItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
 allMenuItems.forEach((item: Menu) => {
 const menuText = () => {
 	let html = `
-		<h2>${item.category_name}</h2>
+		<h2 id="${item.category_name}">${item.category_name}</h2>
 		<ul class="menu-list">
 	`;
 
