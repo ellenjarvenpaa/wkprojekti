@@ -95,20 +95,20 @@ const menuItems = document.querySelectorAll('.menu-item');
 let selectedDishId: string | undefined;
 
 menuItems.forEach((menuItem) => {
-	menuItem.addEventListener('click', (event) => {
-		if (selectedDishId) {
-		selectedDishId = (event.currentTarget as HTMLElement).dataset.dishId;
-		console.log(selectedDishId);
-		}
-	});
+  menuItem.addEventListener('click', (event) => {
+    selectedDishId = (event.currentTarget as HTMLElement).dataset.dishId;
+    console.log(selectedDishId);
+  });
 });
 
+
 document.getElementById('item-modify-form')?.addEventListener('submit', async (event) => {
+	console.log();
 event.preventDefault();
 
 if (selectedDishId) {
-	const itemId: number = parseInt(selectedDishId);
-	console.log(itemId);
+		const itemId: number = parseInt(selectedDishId);
+		console.log(itemId);
 		const nameInput: HTMLInputElement | null = document.querySelector('input[name="dish_name"]');
 		const priceInput: HTMLInputElement | null = document.querySelector('input[name="dish_price"]');
 		const descriptionInput: HTMLTextAreaElement | null = document.querySelector('textarea[name="description"]');
