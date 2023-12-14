@@ -1,4 +1,4 @@
-import { errorModal, menuListHtml, menuListHtmlForOffers, successModal } from "./components";
+import { apiUrl, errorModal, menuListHtml, menuListHtmlForOffers, successModal } from "./components";
 import { fetchData1 } from "./function";
 import { Dishes, Menu } from "./interface/Menu";
 import { Offer } from "./interface/Offer";
@@ -13,7 +13,8 @@ const fetchData = async <T>(url: string, options: RequestInit = {}): Promise<T> 
 };
 
 // GET
-const apiUrl = 'http://127.0.0.1:3000/';
+// const apiUrl = 'https://jalkkari-server.northeurope.cloudapp.azure.com/';
+// const apiUrl = 'http://127.0.0.1:3000/';
 const allMenuItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
 
 allMenuItems.forEach((item: Menu) => {
@@ -52,7 +53,13 @@ allMenuItems.forEach((item: Menu) => {
 
 const fetchDishDetails = async (dishId: number): Promise<Dishes | null> => {
 	try {
-	  const dishDetails = await fetchData<Dishes>(apiUrl + `api/dish/${dishId}`);
+		let dishDetails: Dishes;
+		const token = localStorage.getItem('token');
+		if (token) {
+			dishDetails = await getDish(token, dishId);
+		} else {
+	  		dishDetails = await fetchData<Dishes>(apiUrl + `api/dish/${dishId}`);
+		}
 	  return dishDetails;
 	} catch (error) {
 	  console.error(`Error fetching dish details for dish_id ${dishId}:`, error);
@@ -79,7 +86,7 @@ const fetchDishDetails = async (dishId: number): Promise<Dishes | null> => {
 	  // Display the details in a modal, for example
 	  console.log('Dish Details:', dishDetails);
 
-	  const { dish_photo, dish_name, dish_price, dish_id, description } = dishDetails;
+	  const { dish_photo, dish_name, dish_price, dish_id, description, offer_price } = dishDetails;
 
 	  // Use the fetched details in your HTML
 	  const html = `
@@ -88,7 +95,7 @@ const fetchDishDetails = async (dishId: number): Promise<Dishes | null> => {
 		  <div>
 			<p class="menu-item-name">${dish_name}</p>
 			<p>${description}</p>
-			<p class="menu-item-price">${dish_price}</p>
+			<p class="menu-item-price">${offer_price ?? dish_price}</p>
 		  </div>
 		</div>
 	  `;
@@ -202,6 +209,41 @@ const login = async (user: {
 	return await fetchData1<LoginUser>(apiUrl + 'api/auth/login', options);
 };
 
+// function to get user offers
+const getOffers = async (token: string):Promise<Offer> => {
+	const options: RequestInit = {
+		method: 'GET',
+		headers: {
+			 Authorization: 'Bearer ' + token,
+			'Content-Type': 'application/json'
+		}
+	};
+	return await fetchData1<Offer>(apiUrl + 'api/dish/offers', options);
+}
+
+// function to get menu when user is logged on
+const getDishesWithOffers = async (token: string):Promise<Menu[]> => {
+	const options: RequestInit = {
+		method: 'GET',
+		headers: {
+			 Authorization: 'Bearer ' + token,
+			'Content-Type': 'application/json'
+		}
+	};
+	return await fetchData1<Menu[]>(apiUrl + 'api/dish/logged', options);
+}
+// function to get item by id when logged on
+const getDish = async (token: string, id:number):Promise<Dishes> => {
+	const options: RequestInit = {
+		method: 'GET',
+		headers: {
+			 Authorization: 'Bearer ' + token,
+			'Content-Type': 'application/json'
+		}
+	};
+	return await fetchData1<Dishes>(apiUrl + 'api/dish/'+ id, options);
+}
+
 // function to check if token exists and dipsplay offers
 const checkToken = async () => {
 	const token = localStorage.getItem('token');
@@ -242,8 +284,14 @@ const checkToken = async () => {
 	// select menu item elements from DOM
 	const menuItemEls = document.querySelectorAll('.menu-item');
 	console.log(menuItemEls);
+	// add event listener for menu item
 	menuItemEls.forEach((item) => {
-		item.addEventListener('click', () => {
+		item.addEventListener('click', (event) => {
+			const dishId = (event.currentTarget as HTMLElement).dataset.dishId;
+			console.log(dishId);
+			if (dishId) {
+				displayDishDetails(Number(dishId));
+			}
 			menuItemDialog?.showModal();
 		})
 		document.body.style.overflow = "auto";
@@ -252,35 +300,14 @@ const checkToken = async () => {
 
 }
 
-// function to get user offers
-const getOffers = async (token: string):Promise<Offer> => {
-	const options: RequestInit = {
-		method: 'GET',
-		headers: {
-			 Authorization: 'Bearer ' + token,
-			'Content-Type': 'application/json'
-		}
-	};
-	return await fetchData1<Offer>(apiUrl + 'api/dish/offers', options);
-}
 
-// function to get menu when user is logged on
-const getDishesWithOffers = async (token: string):Promise<Menu[]> => {
-	const options: RequestInit = {
-		method: 'GET',
-		headers: {
-			 Authorization: 'Bearer ' + token,
-			'Content-Type': 'application/json'
-		}
-	};
-	return await fetchData1<Menu[]>(apiUrl + 'api/dish/logged', options);
-}
 
 checkToken();
 
 profileIconE?.addEventListener('click', () => {
 	const userToken = localStorage.getItem('token') as string | null;
 	// if user is not logged in yet, show login modal
+	console.log(userToken);
 	if (userToken === null) {
 		loginDialog?.showModal();
 		document.body.style.overflow = "auto";
@@ -299,7 +326,6 @@ profileIconE?.addEventListener('click', () => {
 				loginDialog?.close();
 
 				// update DOM using token
-				// updateDom(loginData.token);
 				checkToken();
 
 			} catch (err) {

@@ -2,13 +2,13 @@ import { Menu } from "./interface/Menu";
 import { OfferDish } from "./interface/Offer";
 
 const apiUrl = 'http://127.0.0.1:3000/';
-// menu list for offers (currently not used)
+// menu list for offers
 const menuListHtmlForOffers = (dishes: OfferDish[]): string => {
 	let html = '<h2>Tarjoukset</h2><ul class="menu-list">';
 	dishes.forEach((dish) => {
-		const {dish_name, dish_price, offer_price, dish_photo} = dish;
+		const {dish_name, dish_price, offer_price, dish_photo, dish_id} = dish;
 		html +=`
-			<li class="menu-item">
+			<li class="menu-item" data-dish-id=${dish_id}>
 				<img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt=" drink">
 				<div class="menu-item-info">
 					<p class="menu-item-name">${dish_name}</p>
@@ -34,9 +34,9 @@ const menuListHtml = (menuItems: Menu[]): string => {
 		`;
 
 		item.dishes.forEach((dish) => {
-		const { dish_name, dish_price, offer_price, dish_photo } = dish;
+		const { dish_name, dish_price, offer_price, dish_photo, dish_id } = dish;
 		html += `
-			<li class="menu-item">
+			<li class="menu-item" data-dish-id=${dish_id}>
 			<img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt=" drink">
 			<div class="menu-item-info">
 				<p class="menu-item-name">${dish_name}</p>
@@ -84,4 +84,6 @@ const successModal = (message: string) => {
 	return html;
 }
 
-export {errorModal, successModal, menuListHtmlForOffers, menuListHtml};
+
+
+export {errorModal, successModal, menuListHtmlForOffers, menuListHtml, apiUrl};
