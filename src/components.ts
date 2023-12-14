@@ -1,7 +1,9 @@
 import { Menu } from "./interface/Menu";
 import { OfferDish } from "./interface/Offer";
 
-const apiUrl = 'http://127.0.0.1:3000/';
+const apiUrl = 'https://jalkkari-server.northeurope.cloudapp.azure.com/';
+// const apiUrl = 'http://127.0.0.1:3000/';
+
 // menu list for offers
 const menuListHtmlForOffers = (dishes: OfferDish[]): string => {
 	let html = '<h2>Tarjoukset</h2><ul class="menu-list">';

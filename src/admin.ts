@@ -11,9 +11,6 @@ const fetchData = async <T>(url: string, options: RequestInit = {}): Promise<T> 
 	return json;
 };
 
-// const apiUrl = 'https://jalkkari-server.northeurope.cloudapp.azure.com/';
-
-// const apiUrl = 'http://127.0.0.1:3000/';
 const checkToken = async () => {
 	const token = localStorage.getItem('token');
 	console.log(token);
@@ -98,12 +95,12 @@ const menuItems = document.querySelectorAll('.menu-item');
 let selectedDishId: string | undefined;
 
 menuItems.forEach((menuItem) => {
-menuItem.addEventListener('click', (event) => {
-	if (selectedDishId) {
-	selectedDishId = (event.currentTarget as HTMLElement).dataset.dishId;
-	console.log(selectedDishId);
-	}
-});
+	menuItem.addEventListener('click', (event) => {
+		if (selectedDishId) {
+		selectedDishId = (event.currentTarget as HTMLElement).dataset.dishId;
+		console.log(selectedDishId);
+		}
+	});
 });
 
 document.getElementById('item-modify-form')?.addEventListener('submit', async (event) => {
