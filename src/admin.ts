@@ -20,8 +20,8 @@ const checkToken = async () => {
 	// redirect to login page if user is not logged in
 	if (!token) {
 		console.log(window.location.href);
-		if (!window.location.href.includes('index.html')) {
-			window.location.href = 'index.html';
+		if (!window.location.href.includes('login-admin.html')) {
+			window.location.href = 'login-admin.html';
 		}
 	} else {
 		return true;
@@ -29,148 +29,148 @@ const checkToken = async () => {
 };
 checkToken();
 const allMenuItems = await fetchData<Menu[]>(apiUrl + 'api/dish');
-	allMenuItems.forEach((item: Menu) => {
-		const menuText = () => {
-			let html = `
-				<h2>${item.category_name}</h2>
-				<ul class="menu-list">
-			`;
+allMenuItems.forEach((item: Menu) => {
+	const menuText = () => {
+	let html = `
+		<h2>${item.category_name}</h2>
+		<ul class="menu-list">
+	`;
 
-			item.dishes.forEach((dish) => {
-				const { dish_name, dish_price, dish_photo, dish_id } = dish;
-				html += `
-					<li class="menu-item" data-dish-id=${dish_id}>
-					<img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt="drink">
-					<div class="menu-item-info">
-						<p class="menu-item-name">${dish_name}</p>
-						<p class="menu-item-price">${dish_price}</p>
-					</div>
+	item.dishes.forEach((dish) => {
+		const { dish_name, dish_price, dish_photo, dish_id } = dish;
+		html += `
+			<li class="menu-item" data-dish-id=${dish_id}>
+			<img class="menu-img" src="${apiUrl + `media/` + dish_photo}" alt="drink">
+			<div class="menu-item-info">
+				<p class="menu-item-name">${dish_name}</p>
+				<p class="menu-item-price">${dish_price}</p>
+			</div>
 
-				`;
-				// add muokkaus buttoni jos on menu admin sivulla
-				if (document.querySelector('.menu-container')?.classList.contains('menu-admin')) {
-					html += `<div class="menu-item-btns"><button class="menu-modify-btn button">Muokkaa</button>
-					<button class="menu-delete-btn button">Poista</button></div>`;
-				}
+		`;
+		// add muokkaus buttoni jos on menu admin sivulla
+		if (document.querySelector('.menu-container')?.classList.contains('menu-admin')) {
+			html += `<div class="menu-item-btns"><button class="menu-modify-btn button">Muokkaa</button>
+			<button class="menu-delete-btn button">Poista</button></div>`;
+		}
 
-				if (document.querySelector('.menu-container')?.classList.contains('offer-admin')) {
-					html += `<div class="menu-item-btns"><button id="offer-activate" class="button">Aktivoi</button>
-					<button id="offer-delete" class="button">Poista</button></div>`;
-				}
+		if (document.querySelector('.menu-container')?.classList.contains('offer-admin')) {
+			html += `<div class="menu-item-btns"><button id="offer-activate" class="button">Aktivoi</button>
+			<button id="offer-delete" class="button">Poista</button></div>`;
+		}
 
-				html += `	</li>`;
-			});
+		html += `	</li>`;
+	});
 
-			html += `
+	html += `
 
-			</ul>
-			`;
+	</ul>
+	`;
 
-			return html;
+	return html;
+};
+
+const menuTextHtml = menuText();
+document.querySelector('.menu-items')?.insertAdjacentHTML('beforeend', menuTextHtml);
+
+});
+
+
+// PUT
+
+const modifyItem = async (dish_id: number, data: string) => {
+	try {
+		const response = await fetchData<any>(apiUrl + `api/dish/${dish_id}`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+		});
+		return response;
+	} catch (error) {
+		console.error('Error modifying item:', error);
+		throw error;
+	}
+};
+
+const menuItems = document.querySelectorAll('.menu-item');
+
+let selectedDishId: string | undefined;
+
+menuItems.forEach((menuItem) => {
+menuItem.addEventListener('click', (event) => {
+	if (selectedDishId) {
+	selectedDishId = (event.currentTarget as HTMLElement).dataset.dishId;
+	console.log(selectedDishId);
+	}
+});
+});
+
+document.getElementById('item-modify-form')?.addEventListener('submit', async (event) => {
+event.preventDefault();
+
+if (selectedDishId) {
+	const itemId: number = parseInt(selectedDishId);
+	console.log(itemId);
+		const nameInput: HTMLInputElement | null = document.querySelector('input[name="dish_name"]');
+		const priceInput: HTMLInputElement | null = document.querySelector('input[name="dish_price"]');
+		const descriptionInput: HTMLTextAreaElement | null = document.querySelector('textarea[name="description"]');
+		const categorySelect: HTMLSelectElement | null = document.querySelector('select[name="category_id"]');
+		const fileInput: HTMLInputElement | null = document.querySelector('input[name="dish_photo"]');
+
+		const formData: any = {
+			dish_name: nameInput?.value,
+			dish_price: priceInput?.value,
+			description: descriptionInput?.value,
+			category_id: categorySelect?.value,
+			dish_photo: fileInput?.files?.[0],
 		};
 
-		const menuTextHtml = menuText();
-		document.querySelector('.menu-items')?.insertAdjacentHTML('beforeend', menuTextHtml);
+		try {
+			const result = await modifyItem(itemId, formData);
+			console.log(result);
+		} catch (error) {
+			console.error('Error modifying item:', error);
+			throw error;
+		}
 
+		modifyDialog?.close();
+		location.reload();
+	}
+});
+
+// DELETE
+
+const deleteItem = async (dish_id: number) => {
+	try {
+		const response = await fetchData<any>(apiUrl + `api/dish/${dish_id}`, {
+			method: 'DELETE',
 		});
+		return response;
+	} catch (error) {
+		console.error('Error deleting item:', error);
+	}
+};
 
+document.getElementById('delete-item-dialog')?.addEventListener('submit', async (event) => {
+	event.preventDefault();
 
-		// PUT
+	if (selectedDishId) {
+		const itemId: number = parseInt(selectedDishId);
+		console.log(itemId);
 
-		const modifyItem = async (dish_id: number, data: string) => {
-			try {
-				const response = await fetchData<any>(apiUrl + `api/dish/${dish_id}`, {
-					method: 'PUT',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(data),
-				});
-				return response;
-			} catch (error) {
-				console.error('Error modifying item:', error);
-				throw error;
-			}
-		};
+		try {
+			const result = await deleteItem(itemId);
+			console.log(result);
+		} catch (error) {
+			console.error('Error deleting item:', error);
+			throw error;
+		}
 
-		const menuItems = document.querySelectorAll('.menu-item');
-
-		let selectedDishId: string | undefined;
-
-		menuItems.forEach((menuItem) => {
-		menuItem.addEventListener('click', (event) => {
-			if (selectedDishId) {
-			selectedDishId = (event.currentTarget as HTMLElement).dataset.dishId;
-			console.log(selectedDishId);
-			}
-		});
-		});
-
-		document.getElementById('item-modify-form')?.addEventListener('submit', async (event) => {
-		event.preventDefault();
-
-		if (selectedDishId) {
-			const itemId: number = parseInt(selectedDishId);
-			console.log(itemId);
-				const nameInput: HTMLInputElement | null = document.querySelector('input[name="dish_name"]');
-				const priceInput: HTMLInputElement | null = document.querySelector('input[name="dish_price"]');
-				const descriptionInput: HTMLTextAreaElement | null = document.querySelector('textarea[name="description"]');
-				const categorySelect: HTMLSelectElement | null = document.querySelector('select[name="category_id"]');
-				const fileInput: HTMLInputElement | null = document.querySelector('input[name="dish_photo"]');
-
-				const formData: any = {
-					dish_name: nameInput?.value,
-					dish_price: priceInput?.value,
-					description: descriptionInput?.value,
-					category_id: categorySelect?.value,
-					dish_photo: fileInput?.files?.[0],
-				};
-
-				try {
-					const result = await modifyItem(itemId, formData);
-					console.log(result);
-				} catch (error) {
-					console.error('Error modifying item:', error);
-					throw error;
-				}
-
-				modifyDialog?.close();
-				location.reload();
-			}
-		});
-
-		// DELETE
-
-		const deleteItem = async (dish_id: number) => {
-			try {
-				const response = await fetchData<any>(apiUrl + `api/dish/${dish_id}`, {
-					method: 'DELETE',
-				});
-				return response;
-			} catch (error) {
-				console.error('Error deleting item:', error);
-			}
-		};
-
-		document.getElementById('delete-item-dialog')?.addEventListener('submit', async (event) => {
-			event.preventDefault();
-
-			if (selectedDishId) {
-				const itemId: number = parseInt(selectedDishId);
-				console.log(itemId);
-
-				try {
-					const result = await deleteItem(itemId);
-					console.log(result);
-				} catch (error) {
-					console.error('Error deleting item:', error);
-					throw error;
-				}
-
-				deleteDialog?.close();
-				location.reload();
-			}
-		});
+		deleteDialog?.close();
+		location.reload();
+	}
+});
 
 // select dialog element from DOM
 const modifyDialog = document.querySelector('#modify-item-dialog') as HTMLDialogElement | null;
