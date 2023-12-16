@@ -216,8 +216,8 @@ ul {
 /* Dialog */
 dialog {
   background-color: var(--beige);
-  position: absolute;
-  /* border: none; */
+  /* position: absolute; */
+  border: none;
   border-radius: 8px;
   padding: 1em;
   min-width: 700px;

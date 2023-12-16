@@ -174,7 +174,6 @@ minusBtn.addEventListener('click', () => {
 });
 
 
-// select info modal from the DOM
 // select login form from the DOM
 const loginForm = document.querySelector('#login-form') as HTMLFormElement | null;
 // select login inputs from the DOM
@@ -248,7 +247,7 @@ const getDish = async (token: string, id:number):Promise<Dishes> => {
 // function to check if token exists and dipsplay offers
 const checkToken = async () => {
 	const token = localStorage.getItem('token');
-	// console.log(token);
+	console.log(token);
 	if (!token) {
 		return;
 	}

@@ -1,12 +1,12 @@
 import { Menu } from "./interface/Menu";
 import { OfferDish } from "./interface/Offer";
 
-const apiUrl = 'https://jalkkari-server.northeurope.cloudapp.azure.com/';
-// const apiUrl = 'http://127.0.0.1:3000/';
+// const apiUrl = 'https://jalkkari-server.northeurope.cloudapp.azure.com/';
+const apiUrl = 'http://127.0.0.1:3000/';
 
 // menu list for offers
 const menuListHtmlForOffers = (dishes: OfferDish[]): string => {
-	let html = '<h2>Tarjoukset</h2><ul class="menu-list">';
+	let html = '<h2 id="offers">Tarjoukset</h2><ul class="menu-list">';
 	dishes.forEach((dish) => {
 		const {dish_name, dish_price, offer_price, dish_photo, dish_id} = dish;
 		html +=`
@@ -31,7 +31,7 @@ const menuListHtml = (menuItems: Menu[]): string => {
 	let html = '';
 	menuItems.forEach((item: Menu) => {
 		html += `
-		<h2>${item.category_name}</h2>
+		<h2 id="${item.category_name}">${item.category_name}</h2>
 		<ul class="menu-list">
 		`;
 
