@@ -152,7 +152,7 @@ const deleteItem = async (dish_id: number) => {
 	}
 };
 
-document.getElementById('delete-item-dialog')?.addEventListener('submit', async (event) => {
+document.getElementById('#delete-item-dialog')?.addEventListener('submit', async (event) => {
 	event.preventDefault();
 
 	if (selectedDishId) {

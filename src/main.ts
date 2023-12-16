@@ -125,6 +125,7 @@ const loginDialog = document.querySelector('#login-dialog') as HTMLDialogElement
 const shoppingCartDialog = document.querySelector('#shopping-cart-dialog') as HTMLDialogElement | null;
 const infoDialog = document.querySelector('#info') as HTMLDialogElement | null;
 
+
 // select menu item elements from DOM
 const menuItemEls = document.querySelectorAll('.menu-item');
 console.log(menuItemEls);
@@ -171,6 +172,8 @@ minusBtn.addEventListener('click', () => {
     quantity--;
     quantityElement.value = quantity.toString();
 });
+
+
 // select info modal from the DOM
 // select login form from the DOM
 const loginForm = document.querySelector('#login-form') as HTMLFormElement | null;
