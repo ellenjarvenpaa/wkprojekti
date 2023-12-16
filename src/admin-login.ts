@@ -26,7 +26,7 @@ const login = async (user: {
 	  },
 	  body: JSON.stringify(user),
 	}
-	return await fetchData1<LoginUser>(apiUrl + 'api/auth/login/admin', options);
+	return await fetchData1<LoginUser>(apiUrl + 'api/auth/login-admin', options);
 };
 
 loginForm?.addEventListener('submit', async (event) => {

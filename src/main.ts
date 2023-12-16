@@ -305,7 +305,8 @@ checkToken();
 profileIconE?.addEventListener('click', () => {
 	const userToken = localStorage.getItem('token') as string | null;
 	// if user is not logged in yet, show login modal
-	console.log(userToken);
+	// console.log(userToken);
+	console.log(loginDialog);
 	if (userToken === null) {
 		loginDialog?.showModal();
 		document.body.style.overflow = "auto";
