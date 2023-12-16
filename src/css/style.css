@@ -169,7 +169,7 @@ h2 {
 }
 
 .menu-img {
-  height: 300px;
+  object-fit: cover;
 }
 
 .info-item .menu-img {
