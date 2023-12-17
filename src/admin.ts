@@ -1,4 +1,4 @@
-import { apiUrl } from "./components";
+import { apiUrl, errorModal, successModal } from "./components";
 import {Menu} from "./interface/Menu";
 
 // GET
@@ -74,14 +74,15 @@ document.querySelector('.menu-items')?.insertAdjacentHTML('beforeend', menuTextH
 
 // PUT
 
-const modifyItem = async (dish_id: number, data: string) => {
+const modifyItem = async (token:string, dish_id: number, data: FormData) => {
+	console.log(data);
 	try {
 		const response = await fetchData<any>(apiUrl + `api/dish/${dish_id}`, {
 			method: 'PUT',
 			headers: {
-				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + token,
 			},
-			body: JSON.stringify(data),
+			body: data,
 		});
 		return response;
 	} catch (error) {
@@ -100,48 +101,82 @@ menuItems.forEach((menuItem) => {
     console.log(selectedDishId);
   });
 });
-
+// select info dialog from DOM
+const infoDialog = document.querySelector('#info') as HTMLDialogElement | null;
+if (!infoDialog) {
+	throw new Error('Info dialog not found');
+}
 
 document.getElementById('item-modify-form')?.addEventListener('submit', async (event) => {
+	console.log('sumit');
 	console.log();
-event.preventDefault();
+	event.preventDefault();
 
-if (selectedDishId) {
-		const itemId: number = parseInt(selectedDishId);
-		console.log(itemId);
-		const nameInput: HTMLInputElement | null = document.querySelector('input[name="dish_name"]');
-		const priceInput: HTMLInputElement | null = document.querySelector('input[name="dish_price"]');
-		const descriptionInput: HTMLTextAreaElement | null = document.querySelector('textarea[name="description"]');
-		const categorySelect: HTMLSelectElement | null = document.querySelector('select[name="category_id"]');
-		const fileInput: HTMLInputElement | null = document.querySelector('input[name="dish_photo"]');
-
-		const formData: any = {
-			dish_name: nameInput?.value,
-			dish_price: priceInput?.value,
-			description: descriptionInput?.value,
-			category_id: categorySelect?.value,
-			dish_photo: fileInput?.files?.[0],
+	if (selectedDishId) {
+		const token = localStorage.getItem('token');
+		if (!token) {
+			return;
 		};
 
+		const itemId: number = parseInt(selectedDishId);
+		console.log(itemId);
+		const nameInput: HTMLInputElement | null = document.querySelector('#modify-item-dialog input[name="dish_name"]');
+		const priceInput: HTMLInputElement | null = document.querySelector('#modify-item-dialog input[name="dish_price"]');
+		const descriptionInput: HTMLTextAreaElement | null = document.querySelector('#modify-item-dialog textarea[name="description"]');
+		const categorySelect: HTMLSelectElement | null = document.querySelector('#modify-item-dialog select[name="category_id"]');
+		const fileInput: HTMLInputElement | null = document.querySelector('#modify-item-dialog input[name="dish_photo"]');
+		if (!nameInput || !priceInput || !descriptionInput || !categorySelect || !fileInput?.files) {
+			return;
+		}
+		const dish_name: string = nameInput?.value;
+		const dish_price: string = priceInput?.value;
+		const description: string = descriptionInput?.value;
+		const category_id: string = categorySelect?.value;
+		const dish_photo: File = fileInput?.files?.[0];
+		const formData = new FormData();
+		formData.append('dish_name', dish_name);
+		formData.append('dish_price', dish_price);
+		formData.append('description', description);
+		formData.append('category_id', category_id);
+		formData.append('dish_photo', dish_photo);
 		try {
-			const result = await modifyItem(itemId, formData);
+			const result = await modifyItem(token, itemId, formData);
 			console.log(result);
+			const infoHTML = `Päivitys onnistui!`;
+			infoDialog.innerHTML = successModal(infoHTML);
+			infoDialog.showModal();
+			// close info dialog
+			const closeDialogBtnSuccess = document.querySelector('#back-btn-success') as HTMLButtonElement | null;
+			closeDialogBtnSuccess?.addEventListener('click', () => {
+				infoDialog?.close();
+			});
+			// close modify form
+			modifyDialog?.close();
+			location.reload();
 		} catch (error) {
 			console.error('Error modifying item:', error);
-			throw error;
+			const infoHTML = (error as Error).message;
+			infoDialog.innerHTML = errorModal(infoHTML);
+			infoDialog.showModal();
+			// close info dialog
+			const closeDialogBtnError = document.querySelector('#back-btn-error') as HTMLButtonElement;
+				closeDialogBtnError?.addEventListener('click', () => {
+					infoDialog?.close();
+				});
 		}
-
-		modifyDialog?.close();
-		location.reload();
 	}
 });
 
 // DELETE
 
-const deleteItem = async (dish_id: number) => {
+const deleteItem = async (token: string, dish_id: number) => {
+	console.log(dish_id);
 	try {
 		const response = await fetchData<any>(apiUrl + `api/dish/${dish_id}`, {
 			method: 'DELETE',
+			headers: {
+				Authorization: 'Bearer ' + token,
+			},
 		});
 		return response;
 	} catch (error) {
@@ -149,21 +184,23 @@ const deleteItem = async (dish_id: number) => {
 	}
 };
 
-document.getElementById('#delete-item-dialog')?.addEventListener('submit', async (event) => {
+document.getElementById('item-delete-form')?.addEventListener('submit', async (event) => {
 	event.preventDefault();
 
 	if (selectedDishId) {
 		const itemId: number = parseInt(selectedDishId);
 		console.log(itemId);
-
+		const token = localStorage.getItem('token');
+		if (!token) {
+			return;
+		};
 		try {
-			const result = await deleteItem(itemId);
+			const result = await deleteItem(token, itemId);
 			console.log(result);
 		} catch (error) {
 			console.error('Error deleting item:', error);
 			throw error;
 		}
-
 		deleteDialog?.close();
 		location.reload();
 	}

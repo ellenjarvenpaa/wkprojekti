@@ -132,8 +132,8 @@ h2 {
 .menu-item {
   display: grid;
   grid-template-columns: 3fr min-content;
-  grid-template-rows: min-content min-content;
-  padding: 2em;
+  grid-template-rows: 3fr 1fr;
+  padding: 0 2em;
 }
 
 .info-item {
@@ -144,6 +144,7 @@ h2 {
 
 .menu-item p {
   text-align: center;
+  margin: 0.2em;
 }
 
 .info-item p {
@@ -220,7 +221,7 @@ dialog {
   border: none;
   border-radius: 8px;
   padding: 1em;
-  min-width: 700px;
+  min-width: 640px;
   margin: auto;
 }
 
@@ -282,9 +283,58 @@ dialog .shopping-cart {
   grid-auto-rows: auto;
 }
 
+.shopping-cart .cart-item-row {
+  display: flex;
+  align-items: center;
+}
+
+.cart-item {
+  flex: 4;
+}
+
+.cart-item-price {
+  flex: 2;
+}
+
+.shopping-cart .quantity {
+  flex: 2;
+}
+
+.shopping-cart .quantity .quantity-number{
+  width: 80%;
+}
+
+input.cart-quantity-number {
+  text-align: center;
+}
+
+.cart-item-row .remove-btn {
+  flex: 1;
+  padding: 0.5em;
+  margin-left: 1em;
+}
+
+.cart-total {
+  text-align: right;
+  font-size: 1.5em;
+}
+
+.cart-total p {
+  display: inline-block;
+  font-weight: 700;
+  margin-right: 0.5em;
+
+}
+
 .product-info h2 {
   grid-column: 1/2;
   grid-row: 1/2;
+  margin-top: 0.5em;
+  margin-bottom: 0;
+}
+.product-info h3 {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 .shopping-cart h2 {
@@ -505,9 +555,16 @@ input {
 #modify-item-dialog {
   padding: 3em;
 }
-.admin-container .menu-container {
+
+.admin-container .form-container {
   grid-column: 2 / 12;
   grid-row: 2 / 3;
+  justify-self: center;
+  min-width: 500px;
+}
+.admin-container .menu-container {
+  grid-column: 2 / 12;
+  grid-row: 3 / 4;
 }
 
 /* change layout for displaying modify button */
@@ -551,10 +608,19 @@ input {
   width: 1.5em;
 } */
 
+@media screen and (max-width: 768px) {
 
+  .admin-container .form-container {
+    min-width: 450px;
+  }
+}
 @media screen and (max-width: 640px) {
   #modify-item-dialog {
     padding: 1em 1em;
+  }
+
+  .admin-container .form-container {
+    grid-column: 2 / 12;
   }
 }
 .admin-container .order-container {

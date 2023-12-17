@@ -65,7 +65,10 @@ const fetchDishDetails = async (dishId: number): Promise<Dishes | null> => {
 	  console.error(`Error fetching dish details for dish_id ${dishId}:`, error);
 	  return null;
 	}
-  };
+};
+
+
+
 
   // Add event listener to each menu item
   const menuItems = document.querySelectorAll('.menu-item');
@@ -78,6 +81,7 @@ const fetchDishDetails = async (dishId: number): Promise<Dishes | null> => {
 	  }
 	});
   });
+
 
   const displayDishDetails = async (dishId: number) => {
 	const dishDetails = await fetchDishDetails(dishId);
@@ -108,6 +112,21 @@ const fetchDishDetails = async (dishId: number): Promise<Dishes | null> => {
 		infoItemContainer.innerHTML = '';
 
 		infoItemContainer.insertAdjacentHTML('beforeend', html);
+
+				// when a input of quantity is changed, check the input
+		const quantityInput = document.querySelector('.quantity-number') as HTMLInputElement;
+		// console.log(quantityInput);
+		quantityInput?.addEventListener('change', () => {
+			console.log(quantityInput.value);
+			if (!quantityInput?.value) return;
+			// check if the value inside input is a valid number
+			const value = +quantityInput.value;
+			console.log(value);
+			if (isNaN(value) || value <= 0)  {
+				quantityInput.value = '1';
+			}
+		});
+
 	  } else {
 		console.error('infoItemContainer is null');
 	  }
@@ -115,6 +134,30 @@ const fetchDishDetails = async (dishId: number): Promise<Dishes | null> => {
 	  console.log('Unable to fetch dish details');
 	}
   };
+	const plusBtns = document.querySelectorAll('.quantity-plus');
+	plusBtns.forEach((plusBtn) => {
+		plusBtn.addEventListener('click', (event) => {
+			const clickedPlusBtn = event.target as HTMLButtonElement;
+			console.log('clicked');
+			const quantityE = clickedPlusBtn?.parentElement?.previousElementSibling as HTMLInputElement;
+			let quantity = parseInt(quantityE?.value);
+			quantity++;
+			quantityE.value = quantity.toString();
+			console.log(quantityE.value);
+		});
+	});
+	const minusBtns = document.querySelectorAll('.quantity-minus');
+	minusBtns.forEach((minusBtn) => {
+		minusBtn.addEventListener('click', (event) => {
+			const clickedPlusBtn = event.target as HTMLButtonElement;
+			console.log('clicked');
+			const quantityE = clickedPlusBtn?.parentElement?.nextElementSibling as HTMLInputElement;
+			let quantity = parseInt(quantityE?.value);
+			quantity--;
+			quantityE.value = quantity.toString();
+		});
+	});
+
 
 
 
@@ -128,18 +171,18 @@ const infoDialog = document.querySelector('#info') as HTMLDialogElement | null;
 
 // select menu item elements from DOM
 const menuItemEls = document.querySelectorAll('.menu-item');
-console.log(menuItemEls);
+// console.log(menuItemEls);
 menuItemEls.forEach((item) => {
 	item.addEventListener('click', () => {
 		menuItemDialog?.showModal();
 	})
-	document.body.style.overflow = "auto";
+	// document.body.style.overflow = "auto";
 });
 
 const shoppingCartIcon = document.querySelector('#shopping-cart-icon') as HTMLElement | null;
 shoppingCartIcon?.addEventListener('click', () => {
 	shoppingCartDialog?.showModal();
-	document.body.style.overflow = "auto";
+	// document.body.style.overflow = "auto";
 });
 
 const closeDialogBtnInfo = document.querySelector('#back-btn-info') as HTMLDialogElement;
@@ -154,24 +197,9 @@ closeDialogBtnLogin.addEventListener('click', () => {
 
 const closeDialogBtnCart = document.querySelector('#back-btn-cart') as HTMLButtonElement;
 closeDialogBtnCart.addEventListener('click', () => {
-	dialog?.close();
+	shoppingCartDialog?.close();
 });
 
-const plusBtn = document.querySelector('#quantity-plus') as HTMLButtonElement;
-plusBtn.addEventListener('click', () => {
-    const quantityElement = document.querySelector('.quantity-number') as HTMLInputElement;
-    let quantity = parseInt(quantityElement.value)
-    quantity++;
-    quantityElement.value = quantity.toString();
-});
-
-const minusBtn = document.querySelector('#quantity-minus') as HTMLButtonElement;
-minusBtn.addEventListener('click', () => {
-    const quantityElement = document.querySelector('.quantity-number') as HTMLInputElement;
-    let quantity = parseInt(quantityElement.value);
-    quantity--;
-    quantityElement.value = quantity.toString();
-});
 
 
 // select login form from the DOM
@@ -283,7 +311,6 @@ const checkToken = async () => {
 	addMenuToDOM(menuItemsWithOffers);
 	// select menu item elements from DOM
 	const menuItemEls = document.querySelectorAll('.menu-item');
-	console.log(menuItemEls);
 	// add event listener for menu item
 	menuItemEls.forEach((item) => {
 		item.addEventListener('click', (event) => {
@@ -294,7 +321,7 @@ const checkToken = async () => {
 			}
 			menuItemDialog?.showModal();
 		})
-		document.body.style.overflow = "auto";
+		// document.body.style.overflow = "auto";
 	});
 
 
@@ -311,7 +338,7 @@ profileIconE?.addEventListener('click', () => {
 	console.log(loginDialog);
 	if (userToken === null) {
 		loginDialog?.showModal();
-		document.body.style.overflow = "auto";
+		// document.body.style.overflow = "auto";
 
 		loginForm?.addEventListener('submit', async (event) => {
 			try {
@@ -357,5 +384,64 @@ profileIconE?.addEventListener('click', () => {
 	}
 
 });
+
+// CART
+
+console.log('cart!');
+
+// when a remove btn is clicked, remove the item and update total
+const cartRemoveBtns = document.querySelectorAll('.remove-btn');
+for (let btn of cartRemoveBtns) {
+	btn.addEventListener('click', (event) => {
+		console.log('clicked');
+		const buttonClicked = event.target as HTMLButtonElement | null;
+		buttonClicked?.parentElement?.remove();
+		updateCartTotal();
+	});
+}
+
+// when a input of quantity is changed, check the input and update cart
+const cartQuantityInputs = document.querySelectorAll('.cart-quantity-number');
+cartQuantityInputs.forEach((quantityInput) => {
+	quantityInput.addEventListener('change', (event) => {
+		const inputChanged = event.target as HTMLInputElement | null;
+		console.log('change');
+		if (!inputChanged?.value) return;
+		// check if the value inside input is a valid number
+		const value = +inputChanged.value;
+		if (isNaN(value) || value <= 0)  {
+			inputChanged.value = '1';
+		}
+		updateCartTotal();
+	});
+});
+
+
+
+// function to update total price for cart
+const updateCartTotal = () => {
+	const cartItemsContainer = document.querySelectorAll('.cart-item-list')[0];
+	const cartItems = cartItemsContainer.querySelectorAll('.cart-item-row');
+	let total = 0;
+	cartItems.forEach((row) => {
+		const priceE = row.querySelector('.price') as HTMLElement | null;
+		const quantityE = row.querySelector('.cart-quantity-number') as HTMLInputElement | null;
+		if (!priceE?.innerText) {
+			return;
+		}
+		const price = parseFloat(priceE?.innerText);
+		const quantity = (quantityE?.value);
+		if (!quantity) {
+			return;
+		}
+		total += price*parseFloat(quantity);
+
+	});
+	const totalStr = total.toFixed(2);
+	const cartTotal = document.querySelector('#cart-total') as HTMLElement | null;
+	if (!cartTotal?.innerText) return;
+	cartTotal.innerText = totalStr;
+
+}
 
 

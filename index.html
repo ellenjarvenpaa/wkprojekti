@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Agbalumo&family=Caprasimo&display=swap" rel="stylesheet">
-    <title>Vite + TS</title>
+    <title>Jälkkäri Vite + TS</title>
   </head>
   <body>
     <div class="container">
@@ -68,11 +68,12 @@
         <div class="quantity-container">
           <h3>Määrä</h3>
           <div class="quantity">
-            <button id="quantity-minus" class="button" type="button">
+            <button class="quantity-minus" class="button" type="button">
               <img src="icons/minus.png" alt="minus sign">
             </button>
             <input type="number" class="quantity-number" value="1">
-            <button id="quantity-plus" class="button" type="button">
+            <!-- <div class="quantity-number">1</div> -->
+            <button class="quantity-plus" class="button" type="button">
               <img src="icons/plus.png" alt="plus sign">
             </button>
           </div>
@@ -101,11 +102,55 @@
     <dialog id="shopping-cart-dialog">
       <section class="shopping-cart">
           <h2>Ostoskori</h2>
-          <div class="menu-item">
+          <!-- <div class="menu-item">
             <img class="menu-img" src="img/meltingicecream.png" alt="Coca-Cola drink">
             <div>
               <p class="menu-item-name">No items added yet</p>
             </div>
+          </div> -->
+          <div class="cart-item-list">
+            <div class="cart-item-row">
+
+              <div class="cart-item">
+                <p>Punainen sametti</p>
+              </div>
+              <div class="cart-item-price">
+                <span class="price">4.00</span><span>&#x20AC;</span>
+              </div>
+              <div class="quantity">
+                <button class="button minus-btn" type="button">
+                  <img src="icons/minus.png" alt="minus sign">
+                </button>
+                <input type="number" class="cart-quantity-number" value="1">
+                <button class="button plus-btn" type="button">
+                  <img src="icons/plus.png" alt="plus sign">
+                </button>
+              </div>
+              <button class="button remove-btn">Poista</button>
+            </div>
+            <div class="cart-item-row">
+
+              <div class="cart-item">
+                <p>Punainen sametti</p>
+              </div>
+              <div class="cart-item-price">
+                <span class="price">3.00</span><span>&#x20AC;</span>
+              </div>
+              <div class="quantity">
+                <button class="button minus-btn quantity-plus" type="button">
+                  <img src="icons/minus.png" alt="minus sign">
+                </button>
+                <input type="number" class="cart-quantity-number" value="1">
+                <button class="button plus-btn quantity-minus" type="button">
+                  <img src="icons/plus.png" alt="plus sign">
+                </button>
+
+              </div>
+              <button class="button remove-btn">Poista</button>
+            </div>
+          </div>
+          <div class="cart-total">
+            <p>Total: </p><span id="cart-total">7.00</span><span>&#x20AC;</span>
           </div>
           <div class="buttons">
             <button type="button" class="button" id="back-btn-cart">Takaisin</button>
